@@ -1,88 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Gaming Hub – Play & Buy Games</title>
-<link rel="stylesheet" href="style.css">
+<title>Gaming Hub</title>
 
-<!-- Google AdSense -->
+<!-- ✅ AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
 crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <header>
-  <div class="logo">
-    <img src="images/logo.png" alt="Gaming Hub Logo">
-    <span>Gaming Hub</span>
-  </div>
+  <h1>🎮 Gaming Hub</h1>
   <nav>
     <a href="#play">Play</a>
-    <a href="#buy">Buy</a>
+    <a href="buy.html">Buy</a>
   </nav>
 </header>
 
-<section class="hero">
-  <h1>Play & Buy Games Online</h1>
-  <p>Play free games instantly or buy premium PC games directly from the browser.</p>
+<section id="play" class="games">
+
+<div class="game-card">
+  <img src="images/tictactoe.png">
+  <h3>Tic Tac Toe</h3>
+  <a href="games/tictactoe.html">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="images/snake.png">
+  <h3>Snake</h3>
+  <a href="games/snake.html">Play</a>
+</div>
+
+<div class="game-card">
+  <img src="images/2048.png">
+  <h3>2048</h3>
+  <a href="games/2048.html">Play</a>
+</div>
+
 </section>
-
-<!-- PLAY ONLINE -->
-<section id="play">
-  <h2>Play Online</h2>
-
-  <div class="card">
-    <img src="images/tictactoe.png">
-    <span>Tic Tac Toe</span>
-    <a href="games/tictactoe.html">Play</a>
-  </div>
-
-  <div class="card">
-    <img src="images/snake.png">
-    <span>Snake</span>
-    <a href="games/snake.html">Play</a>
-  </div>
-
-  <div class="card">
-    <img src="images/2048.png">
-    <span>2048</span>
-    <a href="games/2048.html">Play</a>
-  </div>
-
-  <div class="card">
-    <img src="images/chess.png">
-    <span>Chess</span>
-    <a href="games/chess.html">Play</a>
-  </div>
-</section>
-
-<!-- BUY GAMES -->
-<section id="buy">
-  <h2>Buy Games</h2>
-
-  <div class="card">
-    <img src="images/gta.png">
-    <span>GTA V – ₹999</span>
-    <a href="checkout.html?game=GTA+V&price=999">Buy</a>
-  </div>
-
-  <div class="card">
-    <img src="images/cod.png">
-    <span>Call of Duty – ₹799</span>
-    <a href="checkout.html?game=Call+of+Duty&price=799">Buy</a>
-  </div>
-
-  <div class="card">
-    <img src="images/minecraft.png">
-    <span>Minecraft – ₹499</span>
-    <a href="checkout.html?game=Minecraft&price=499">Buy</a>
-  </div>
-</section>
-
-<footer>
-  <p>© 2025 Gaming Hub</p>
-</footer>
 
 </body>
 </html>
