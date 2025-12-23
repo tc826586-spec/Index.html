@@ -7,7 +7,10 @@
 
 /* Background image */
 body {
-  background: url("images/bg.jpg") no-repeat center center fixed;
+  min-height: 100vh;
+  background-image: url("./images/bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
   background-size: cover;
   color: white;
 }
