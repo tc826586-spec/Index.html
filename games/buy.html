@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Buy Games</title>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+
+<body>
+
+<h1>Buy Premium Games</h1>
+
+<button onclick="pay()">Pay ₹99</button>
+
+<script>
+function pay(){
+var options={
+"key":"rzp_test_1234567890",
+"amount":9900,
+"currency":"INR",
+"name":"Gaming Hub",
+"description":"Premium Game Access",
+"handler":function(){
+alert("Payment Successful");
+}
+};
+new Razorpay(options).open();
+}
+</script>
+
+<a href="index.html">⬅ Back</a>
+
+</body>
+</html>
