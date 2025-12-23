@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gaming Hub</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<title>Gaming Hub</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 </head>
+
 <body>
 
 <header class="navbar">
@@ -23,89 +27,76 @@
 
 <section class="hero">
   <h1>Buy & Play Games Online</h1>
-  <p>Play instantly in your browser or buy premium PC & console games</p>
-  <a href="#online" class="btn">Play Online</a>
+  <p>Play browser games instantly or buy premium PC games securely</p>
 </section>
 
-<!-- PLAY ONLINE -->
-<section id="online" class="games">
-  <h2>Play Online Games</h2>
-
-  <div class="game-grid">
-
-    <div class="game-card">
-      <h3>Tic Tac Toe</h3>
-      <a class="btn" href="https://playtictactoe.org/" target="_blank">Play Now</a>
-    </div>
-
-    <div class="game-card">
-      <h3>Snake Game</h3>
-      <a class="btn" href="https://playsnake.org/" target="_blank">Play Now</a>
-    </div>
-
-    <div class="game-card">
-      <h3>Flappy Bird</h3>
-      <a class="btn" href="https://flappybird.io/" target="_blank">Play Now</a>
-    </div>
-
-    <div class="game-card">
-      <h3>2048</h3>
-      <a class="btn" href="https://play2048.co/" target="_blank">Play Now</a>
-    </div>
-
-    <div class="game-card">
-      <h3>Chess</h3>
-      <a class="btn" href="https://www.chess.com/play/computer" target="_blank">Play Now</a>
-    </div>
-
-    <div class="game-card">
-      <h3>Tetris</h3>
-      <a class="btn" href="https://tetris.com/play-tetris" target="_blank">Play Now</a>
-    </div>
-
+<!-- ONLINE GAMES -->
+<section id="online" class="section">
+  <h2>Play Online</h2>
+  <div class="grid">
+    <div class="card"><h3>Tic Tac Toe</h3><a href="https://playtictactoe.org/" target="_blank">Play</a></div>
+    <div class="card"><h3>Snake</h3><a href="https://playsnake.org/" target="_blank">Play</a></div>
+    <div class="card"><h3>2048</h3><a href="https://play2048.co/" target="_blank">Play</a></div>
+    <div class="card"><h3>Chess</h3><a href="https://www.chess.com/play/computer" target="_blank">Play</a></div>
   </div>
 </section>
 
-<!-- BUY GAMES -->
-<section id="store" class="games">
-  <h2>Buy Premium Games</h2>
+<!-- STORE -->
+<section id="store" class="section dark">
+  <h2>Buy Games</h2>
 
-  <div class="game-grid">
-    <div class="game-card">
+  <div class="grid">
+
+    <div class="card game">
+      <img src="images/gta.jpg">
       <h3>GTA V</h3>
       <p>₹999</p>
-      <a class="btn"
-        href="https://wa.me/917902057433?text=I%20want%20to%20buy%20GTA%20V"
-        target="_blank">Buy on WhatsApp</a>
+      <button onclick="pay(999, 'GTA V')">Buy Now</button>
     </div>
 
-    <div class="game-card">
+    <div class="card game">
+      <img src="images/cod.jpg">
       <h3>Call of Duty</h3>
       <p>₹799</p>
-      <a class="btn"
-        href="https://wa.me/917902057433?text=I%20want%20to%20buy%20Call%20of%20Duty"
-        target="_blank">Buy on WhatsApp</a>
+      <button onclick="pay(799, 'Call of Duty')">Buy Now</button>
     </div>
 
-    <div class="game-card">
+    <div class="card game">
+      <img src="images/minecraft.jpg">
       <h3>Minecraft</h3>
       <p>₹499</p>
-      <a class="btn"
-        href="https://wa.me/917902057433?text=I%20want%20to%20buy%20Minecraft"
-        target="_blank">Buy on WhatsApp</a>
+      <button onclick="pay(499, 'Minecraft')">Buy Now</button>
     </div>
+
   </div>
 </section>
 
-<!-- CONTACT -->
-<section id="contact" class="contact">
-  <h2>Contact Us</h2>
-  <p>WhatsApp: <b>7902057433</b></p>
+<section id="contact" class="section">
+  <h2>Contact</h2>
+  <p>Support: 7902057433</p>
 </section>
 
-<footer>
-  © 2025 Gaming Hub
-</footer>
+<footer>© 2025 Gaming Hub</footer>
+
+<script>
+function pay(amount, game) {
+  var options = {
+    "key": "YOUR_RAZORPAY_KEY_ID", // <-- ADD YOUR KEY
+    "amount": amount * 100,
+    "currency": "INR",
+    "name": "Gaming Hub",
+    "description": game,
+    "handler": function (response){
+      alert("Payment Successful!\nPayment ID: " + response.razorpay_payment_id);
+    },
+    "theme": {
+      "color": "#4f46e5"
+    }
+  };
+  var rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
 
 </body>
 </html>
