@@ -1,3 +1,9 @@
-  gta.png
-  cod.png
-  minecraft.png
+main
+│
+├── index.html
+├── style.css
+└── images/
+    ├── gta.png
+    ├── cod.png
+    ├── minecraft.png
+    └── background.png
