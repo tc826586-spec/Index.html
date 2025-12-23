@@ -1,138 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gaming Hub – Play & Buy Games</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Google font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <!-- External CSS -->
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Gaming Hub</title>
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Google AdSense -->
+  <script async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
+    crossorigin="anonymous"></script>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header class="gh-header">
-    <div class="logo">
-      <!-- Put logo.png in same folder -->
-      <img src="images/E-sport Logo for Gamers, Raven.jpeg" alt="Gaming Hub Logo">
-      <span class="logo-text">Gaming Hub</span>
-    </div>
+<header class="navbar">
+  <div class="logo">
+    <img src="images/logo.png" alt="Gaming Hub Logo">
+    <span>Gaming Hub</span>
+  </div>
+  <nav>
+    <a href="#play">Play</a>
+    <a href="#buy">Buy</a>
+  </nav>
+</header>
 
-    <nav class="nav-links">
-      <a href="#play">Play</a>
-      <a href="#buy">Buy</a>
-      <a href="#feedback">Feedback</a>
-    </nav>
-  </header>
+<section class="section" id="play">
+  <h2>🎮 Play Online Games</h2>
 
-  <!-- HERO -->
-  <section class="hero">
-    <h1>Play &amp; Buy Your Favourite Games</h1>
-    <p>
-      Enjoy classic browser games for free and grab amazing deals on
-      premium PC and console titles, all in one place.
-    </p>
-    <a href="#play" class="btn-primary">Start Playing</a>
-  </section>
+  <div class="game-card">
+    <span>Tic Tac Toe</span>
+    <a href="games/tictactoe.html">Play</a>
+  </div>
 
-  <!-- PLAY FREE GAMES -->
-  <section id="play" class="section">
-    <h2>Play Free Games</h2>
+  <div class="game-card">
+    <span>Snake</span>
+    <a href="games/snake.html">Play</a>
+  </div>
 
-    <div class="card-list">
-      <article class="game-row">
-        <div class="game-info">
-          <img src="tictactoe-icon.png" alt="Tic Tac Toe">
-          <span>Tic Tac Toe</span>
-        </div>
-        <!-- change href to your real game page -->
-        <section id="play" class="games">
-<h2>Play Online (Free)</h2>
+  <div class="game-card">
+    <span>2048</span>
+    <a href="games/2048.html">Play</a>
+  </div>
 
-<div class="game-card">
-  <span>Tic Tac Toe</span>
-  <a href="games/tictactoe.html">Play</a>
-</div>
-
-<div class="game-card">
-  <span>Snake</span>
-  <a href="games/snake.html">Play</a>
-</div>
-
-<div class="game-card">
-  <span>2048</span>
-  <a href="games/2048.html">Play</a>
-</div>
-
-<div class="game-card">
-  <span>Chess</span>
-  <a href="games/chess.html">Play</a>
-</div>
+  <div class="game-card">
+    <span>Chess</span>
+    <a href="games/chess.html">Play</a>
+  </div>
 </section>
 
-  <!-- BUY GAMES -->
-  <section id="buy" class="section">
-    <h2>Buy Games</h2>
+<section class="section" id="buy">
+  <h2>🛒 Buy Games</h2>
 
-    <div class="games-grid">
+  <div class="buy-card">GTA V – ₹999</div>
+  <div class="buy-card">Call of Duty – ₹799</div>
+  <div class="buy-card">Minecraft – ₹499</div>
+</section>
 
-      <article class="game-card">
-        <img src="images/d753119e-0edc-4efa-8e33-aa79a30ac730.jpeg" alt="GTA V" class="game-cover">
-        <h3>GTA V</h3>
-        <p class="tagline">Action • Open World</p>
-        <p class="price">₹999</p>
-        <!-- change number to your WhatsApp -->
-        <a class="btn-whatsapp"
-           href="https://wa.me/7902057433?text=I%20want%20to%20buy%20GTA%20V"
-           target="_blank">
-          Buy on WhatsApp
-        </a>
-      </article>
-
-      <article class="game-card">
-        <img src="images/COD modern ware fare 2 logo.jpeg
-" alt="Call of Duty" class="game-cover">
-        <h3>Call of Duty</h3>
-        <p class="tagline">Shooter • Multiplayer</p>
-        <p class="price">₹799</p>
-        <a class="btn-whatsapp"
-           href="https://wa.me/7902057433?text=I%20want%20to%20buy%20Call%20of%20Duty"
-           target="_blank">
-          Buy on WhatsApp
-        </a>
-      </article>
-
-      <article class="game-card">
-        <img src="images/download.jpg" alt="Minecraft" class="game-cover">
-        <h3>Minecraft</h3>
-        <p class="tagline">Sandbox • Survival</p>
-        <p class="price">₹499</p>
-        <a class="btn-whatsapp"
-           href="https://wa.me/7902057433?text=I%20want%20to%20buy%20Minecraft"
-           target="_blank">
-          Buy on WhatsApp
-        </a>
-      </article>
-
-    </div>
-  </section>
-
-  <!-- FEEDBACK -->
-  <section id="feedback" class="section feedback">
-    <h2>Feedback</h2>
-    <form class="feedback-form">
-      <input type="text" placeholder="Your Name" required>
-      <input type="email" placeholder="Your Email" required>
-      <textarea placeholder="Your Message" required></textarea>
-      <button type="submit">Submit</button>
-    </form>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    © 2025 Gaming Hub. All rights reserved.
-  </footer>
+<footer>
+  © 2025 Gaming Hub
+</footer>
 
 </body>
 </html>
