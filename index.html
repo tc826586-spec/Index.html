@@ -1,61 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gaming Hub</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <title>Gaming Hub</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <header class="navbar">
-  <h1>Gaming Hub</h1>
-  <nav>
-    <a href="#">Home</a>
-    <a href="#">Games</a>
-    <a href="#">Feedback</a>
-  </nav>
+    <h1>🎮 Gaming Hub</h1>
+    <nav>
+        <a href="#">Home</a>
+        <a href="#games">Games</a>
+        <a href="#feedback">Feedback</a>
+    </nav>
 </header>
 
 <section class="hero">
-  <h2>Buy & Sell Games Online</h2>
-  <p>Fast • Secure • Trusted Gaming Marketplace</p>
-  <button>Browse Games</button>
+    <h2>Buy & Sell Games Online</h2>
+    <p>Fast • Secure • Trusted Gaming Marketplace</p>
+    <button>Browse Games</button>
 </section>
 
-<section class="section">
-  <h2>Popular Games</h2>
+<section id="games" class="games-section">
+    <h2>Popular Games</h2>
 
-  <div class="games">
-    <div class="card">
-      <img src="images/gta.png" alt="GTA V">
-      <h3>GTA V</h3>
-      <p>₹999</p>
-      <button>Buy on WhatsApp</button>
-    </div>
+    <div class="games">
+        <div class="card">
+            <img src="images/gta.png" alt="GTA V">
+            <h3>GTA V</h3>
+            <p>₹999</p>
+            <a href="#">Buy on WhatsApp</a>
+        </div>
 
-    <div class="card">
-      <img src="images/cod.png" alt="Call of Duty">
-      <h3>Call of Duty</h3>
-      <p>₹799</p>
-      <button>Buy on WhatsApp</button>
-    </div>
+        <div class="card">
+            <img src="images/cod.png" alt="Call of Duty">
+            <h3>Call of Duty</h3>
+            <p>₹799</p>
+            <a href="#">Buy on WhatsApp</a>
+        </div>
 
-    <div class="card">
-      <img src="images/minecraft.png" alt="Minecraft">
-      <h3>Minecraft</h3>
-      <p>₹499</p>
-      <button>Buy on WhatsApp</button>
+        <div class="card">
+            <img src="images/minecraft.png" alt="Minecraft">
+            <h3>Minecraft</h3>
+            <p>₹499</p>
+            <a href="#">Buy on WhatsApp</a>
+        </div>
     </div>
-  </div>
 </section>
 
-<section class="feedback">
-  <h2>Feedback</h2>
-  <input type="text" placeholder="Your Name">
-  <input type="email" placeholder="Your Email">
-  <textarea placeholder="Your Message"></textarea>
-  <button>Submit</button>
+<section id="feedback" class="feedback">
+    <h2>Feedback</h2>
+    <input type="text" placeholder="Your Name">
+    <input type="email" placeholder="Your Email">
+    <textarea placeholder="Your Message"></textarea>
+    <button>Submit</button>
 </section>
+
+<footer>
+    <p>© 2025 Gaming Hub. All rights reserved.</p>
+</footer>
 
 </body>
 </html>
