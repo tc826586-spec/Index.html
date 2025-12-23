@@ -7,10 +7,12 @@
 </head>
 <body>
 
-<header>
+<header class="navbar">
   <h1>Gaming Hub</h1>
   <nav>
-    Home | Games | Feedback
+    <a href="#">Home</a>
+    <a href="#">Games</a>
+    <a href="#">Feedback</a>
   </nav>
 </header>
 
@@ -20,36 +22,38 @@
   <button>Browse Games</button>
 </section>
 
-<h2 style="text-align:center;">Popular Games</h2>
+<section class="section">
+  <h2>Popular Games</h2>
 
-<section class="games">
-  <div class="card">
-    <img src="images/gta.jpg" alt="GTA V">
-    <h3>GTA V</h3>
-    <p>₹999</p>
-    <button>Buy on WhatsApp</button>
-  </div>
+  <div class="games">
+    <div class="card">
+      <img src="images/gta.png" alt="GTA V">
+      <h3>GTA V</h3>
+      <p>₹999</p>
+      <button>Buy on WhatsApp</button>
+    </div>
 
-  <div class="card">
-    <img src="images/cod.jpg" alt="Call of Duty">
-    <h3>Call of Duty</h3>
-    <p>₹799</p>
-    <button>Buy on WhatsApp</button>
-  </div>
+    <div class="card">
+      <img src="images/cod.png" alt="Call of Duty">
+      <h3>Call of Duty</h3>
+      <p>₹799</p>
+      <button>Buy on WhatsApp</button>
+    </div>
 
-  <div class="card">
-    <img src="images/minecraft.jpg" alt="Minecraft">
-    <h3>Minecraft</h3>
-    <p>₹499</p>
-    <button>Buy on WhatsApp</button>
+    <div class="card">
+      <img src="images/minecraft.png" alt="Minecraft">
+      <h3>Minecraft</h3>
+      <p>₹499</p>
+      <button>Buy on WhatsApp</button>
+    </div>
   </div>
 </section>
 
 <section class="feedback">
   <h2>Feedback</h2>
-  <input type="text" placeholder="Your Name"><br>
-  <input type="email" placeholder="Your Email"><br>
-  <textarea placeholder="Your Message"></textarea><br>
+  <input type="text" placeholder="Your Name">
+  <input type="email" placeholder="Your Email">
+  <textarea placeholder="Your Message"></textarea>
   <button>Submit</button>
 </section>
 
