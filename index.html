@@ -1,14 +1,99 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Gaming Hub</title>
 
-<!-- ✅ AdSense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
-crossorigin="anonymous"></script>
+<!-- Razorpay -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
-<link rel="stylesheet" href="style.css">
+<style>
+:root{
+  --card:#1f2937;
+  --btn:#0ea5e9;
+}
+body{
+  margin:0;
+  font-family:system-ui,Segoe UI,Arial;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:#fff;
+}
+header{
+  background:#020617;
+  padding:16px 30px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+header h1{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  font-size:22px;
+}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
+  font-weight:600;
+}
+.container{
+  max-width:1200px;
+  margin:auto;
+  padding:40px 20px;
+}
+.section-title{
+  font-size:26px;
+  margin-bottom:20px;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:20px;
+}
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 10px 30px #0005;
+}
+.card img{
+  width:70px;
+  margin-bottom:10px;
+}
+button{
+  background:var(--btn);
+  border:none;
+  padding:10px 20px;
+  border-radius:8px;
+  color:#fff;
+  cursor:pointer;
+  font-weight:600;
+}
+button:hover{opacity:.9}
+canvas{
+  background:#000;
+  border-radius:10px;
+  display:block;
+  margin:auto;
+}
+.controls{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:10px;
+}
+.controls button{
+  padding:10px 14px;
+}
+footer{
+  text-align:center;
+  padding:20px;
+  opacity:.7;
+}
+</style>
 </head>
 
 <body>
@@ -16,32 +101,120 @@ crossorigin="anonymous"></script>
 <header>
   <h1>🎮 Gaming Hub</h1>
   <nav>
-    <a href="#play">Play</a>
-    <a href="buy.html">Buy</a>
+    <a href="#free">Play</a>
+    <a href="#buy">Buy</a>
   </nav>
 </header>
 
-<section id="play" class="games">
+<div class="container">
 
-<div class="game-card">
-  <img src="images/tictactoe.png">
-  <h3>Tic Tac Toe</h3>
-  <a href="games/tictactoe.html">Play</a>
+<!-- FREE GAMES -->
+<h2 id="free" class="section-title">🎯 Free Games</h2>
+<div class="grid">
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/566/566294.png">
+    <h3>Tic Tac Toe</h3>
+    <button onclick="showGame('ttt')">Play</button>
+  </div>
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/188/188987.png">
+    <h3>Snake</h3>
+    <button onclick="showGame('snake')">Play</button>
+  </div>
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/1216/1216733.png">
+    <h3>2048</h3>
+    <button onclick="showGame('2048')">Play</button>
+  </div>
 </div>
 
-<div class="game-card">
-  <img src="images/snake.png">
-  <h3>Snake</h3>
-  <a href="games/snake.html">Play</a>
+<!-- GAME AREA -->
+<div id="gameArea" style="margin-top:40px;text-align:center;"></div>
+
+<!-- BUY GAMES -->
+<h2 id="buy" class="section-title">🛒 Buy Premium Games</h2>
+<div class="grid">
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/919/919831.png">
+    <h3>Premium Racing</h3>
+    <p>₹199</p>
+    <button onclick="pay()">Buy Now</button>
+  </div>
+  <div class="card">
+    <img src="https://cdn-icons-png.flaticon.com/512/1055/1055687.png">
+    <h3>Pro Shooter</h3>
+    <p>₹299</p>
+    <button onclick="pay()">Buy Now</button>
+  </div>
 </div>
 
-<div class="game-card">
-  <img src="images/2048.png">
-  <h3>2048</h3>
-  <a href="games/2048.html">Play</a>
 </div>
 
-</section>
+<footer>© 2025 Gaming Hub</footer>
+
+<script>
+function showGame(game){
+  const area=document.getElementById('gameArea');
+  if(game==='ttt'){
+    area.innerHTML='<h3>Tic Tac Toe</h3><iframe src="https://playtictactoe.org/" width="100%" height="400"></iframe>';
+  }
+  if(game==='2048'){
+    area.innerHTML='<h3>2048</h3><iframe src="https://play2048.co/" width="100%" height="500"></iframe>';
+  }
+  if(game==='snake'){
+    area.innerHTML=`
+    <h3>Snake Game</h3>
+    <canvas id="snake" width="300" height="300"></canvas>
+    <div class="controls">
+      <button onclick="dir='up'">⬆</button>
+      <button onclick="dir='left'">⬅</button>
+      <button onclick="dir='right'">➡</button>
+      <button onclick="dir='down'">⬇</button>
+    </div>`;
+    startSnake();
+  }
+}
+
+/* Snake Game */
+let ctx,box=10,snake,food,dir;
+function startSnake(){
+  const c=document.getElementById('snake');
+  ctx=c.getContext('2d');
+  snake=[{x:150,y:150}];
+  food={x:Math.random()*290,y:Math.random()*290};
+  dir='right';
+  setInterval(draw,120);
+}
+function draw(){
+  ctx.fillStyle='black';
+  ctx.fillRect(0,0,300,300);
+  ctx.fillStyle='lime';
+  snake.forEach(s=>ctx.fillRect(s.x,s.y,box,box));
+  ctx.fillStyle='red';
+  ctx.fillRect(food.x,food.y,box,box);
+  let head={...snake[0]};
+  if(dir==='right')head.x+=box;
+  if(dir==='left')head.x-=box;
+  if(dir==='up')head.y-=box;
+  if(dir==='down')head.y+=box;
+  snake.unshift(head);
+  if(head.x!==food.x||head.y!==food.y)snake.pop();
+  else food={x:Math.floor(Math.random()*29)*10,y:Math.floor(Math.random()*29)*10};
+}
+
+/* Payment */
+function pay(){
+  var options={
+    key:"rzp_test_xxxxxxxx",
+    amount:19900,
+    currency:"INR",
+    name:"Gaming Hub",
+    description:"Game Purchase",
+    handler:function(){alert("Payment Successful")}
+  };
+  new Razorpay(options).open();
+}
+</script>
 
 </body>
 </html>
