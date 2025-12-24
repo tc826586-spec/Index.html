@@ -2,148 +2,202 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Endless Runner</title>
+<title>3D Tic Tac Toe</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
 body{
   margin:0;
-  background:#0b0f1a;
+  height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  height:100vh;
-  font-family:Arial;
+  background:radial-gradient(circle at top,#1a2a3a,#05070c);
+  font-family:Arial,Helvetica,sans-serif;
   color:#fff;
 }
-.game{
-  width:360px;
-  height:600px;
-  background:linear-gradient(#111,#222);
-  position:relative;
-  overflow:hidden;
-  border-radius:14px;
+
+.container{
+  background:#0e1525;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 30px 60px rgba(0,0,0,.7);
+  width:340px;
+  text-align:center;
 }
-.player{
-  width:40px;
-  height:60px;
-  background:#00ffd5;
-  position:absolute;
-  bottom:90px;
-  left:160px;
-  border-radius:8px;
+
+h1{
+  margin:10px 0;
 }
-.obstacle{
-  width:40px;
-  height:40px;
-  background:#ff4757;
-  position:absolute;
-  top:-40px;
-  border-radius:6px;
-}
-.score{
-  position:absolute;
-  top:10px;
-  left:10px;
-  font-weight:bold;
-}
-.controls{
-  position:absolute;
-  bottom:10px;
-  width:100%;
-  display:flex;
-  justify-content:space-around;
-}
-.controls button{
-  padding:10px 14px;
+
+.mode button{
+  margin:5px;
+  padding:8px 14px;
   border:none;
-  border-radius:6px;
-  background:#00ffd5;
+  border-radius:8px;
+  cursor:pointer;
   font-weight:bold;
+  background:#00ffd5;
+  color:#000;
+}
+
+.status{
+  margin:10px 0;
+  font-weight:bold;
+}
+
+.board{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  perspective:800px;
+  margin:15px 0;
+}
+
+.cell{
+  height:90px;
+  background:linear-gradient(#2b3a55,#121a2f);
+  border-radius:12px;
+  font-size:2.5rem;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+  transform-style:preserve-3d;
+  box-shadow:
+    inset 0 4px 8px rgba(255,255,255,.15),
+    inset 0 -6px 10px rgba(0,0,0,.6),
+    0 10px 20px rgba(0,0,0,.6);
+  transition:.25s;
+}
+
+.cell:hover{
+  transform:rotateX(10deg) rotateY(-10deg);
+}
+
+.cell.taken{
+  cursor:default;
+}
+
+.cell.X{
+  color:#00ffd5;
+  text-shadow:0 0 10px #00ffd5;
+}
+
+.cell.O{
+  color:#ff5c8a;
+  text-shadow:0 0 10px #ff5c8a;
+}
+
+.reset{
+  padding:8px 18px;
+  border:none;
+  border-radius:8px;
+  background:#ff4757;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="game" id="game">
-  <div class="score" id="score">Score: 0</div>
-  <div class="player" id="player"></div>
+<div class="container">
+  <h1>3D Tic Tac Toe</h1>
 
-  <div class="controls">
-    <button onclick="moveLeft()">⬅</button>
-    <button onclick="jump()">⬆</button>
-    <button onclick="moveRight()">➡</button>
+  <div class="mode">
+    <button onclick="setMode('ai')">VS Computer</button>
+    <button onclick="setMode('two')">Two Players</button>
   </div>
+
+  <div class="status" id="status">Choose a mode</div>
+
+  <div class="board" id="board"></div>
+
+  <button class="reset" onclick="resetGame()">Restart</button>
 </div>
 
 <script>
-const game=document.getElementById("game");
-const player=document.getElementById("player");
-const scoreEl=document.getElementById("score");
+const boardEl=document.getElementById("board");
+const statusEl=document.getElementById("status");
 
-let lanes=[60,160,260];
-let lane=1;
-let jumping=false;
-let score=0;
-let speed=4;
-let gameOver=false;
+let board=["","","","","","","","",""];
+let current="X";
+let gameOn=false;
+let mode="";
 
-player.style.left=lanes[lane]+"px";
+const wins=[
+ [0,1,2],[3,4,5],[6,7,8],
+ [0,3,6],[1,4,7],[2,5,8],
+ [0,4,8],[2,4,6]
+];
 
-function moveLeft(){
- if(lane>0){lane--;player.style.left=lanes[lane]+"px";}
-}
-function moveRight(){
- if(lane<2){lane++;player.style.left=lanes[lane]+"px";}
-}
-function jump(){
- if(jumping)return;
- jumping=true;
- let up=0;
- let i=setInterval(()=>{
-  up+=5;
-  player.style.bottom=90+up+"px";
-  if(up>=60){clearInterval(i);fall();}
- },20);
-}
-function fall(){
- let d=60;
- let i=setInterval(()=>{
-  d-=5;
-  player.style.bottom=90+d+"px";
-  if(d<=0){clearInterval(i);jumping=false;}
- },20);
+function setMode(m){
+ mode=m;
+ resetGame();
+ gameOn=true;
+ statusEl.textContent=current+"'s turn";
 }
 
-function obstacle(){
- if(gameOver)return;
- let o=document.createElement("div");
- o.className="obstacle";
- o.style.left=lanes[Math.floor(Math.random()*3)]+"px";
- game.appendChild(o);
- let t=-40;
- let i=setInterval(()=>{
-  t+=speed;
-  o.style.top=t+"px";
-  let p=player.getBoundingClientRect();
-  let r=o.getBoundingClientRect();
-  if(p.left<r.right&&p.right>r.left&&p.top<r.bottom&&p.bottom>r.top){
-    alert("Game Over! Score: "+score);
-    location.reload();
+function drawBoard(){
+ boardEl.innerHTML="";
+ board.forEach((v,i)=>{
+  let c=document.createElement("div");
+  c.className="cell";
+  if(v){
+    c.textContent=v;
+    c.classList.add(v,"taken");
   }
-  if(t>600){clearInterval(i);o.remove();}
- },20);
+  c.onclick=()=>move(i);
+  boardEl.appendChild(c);
+ });
 }
 
-setInterval(()=>{score++;scoreEl.innerText="Score: "+score;if(score%100==0)speed++;},120);
-setInterval(obstacle,1200);
+function move(i){
+ if(!gameOn||board[i])return;
+ board[i]=current;
+ drawBoard();
 
-document.addEventListener("keydown",e=>{
- if(e.key==="ArrowLeft")moveLeft();
- if(e.key==="ArrowRight")moveRight();
- if(e.key==="ArrowUp")jump();
-});
+ if(checkWin(current)){
+   statusEl.textContent=current+" wins!";
+   gameOn=false;
+   return;
+ }
+
+ if(board.every(c=>c)){
+   statusEl.textContent="Draw!";
+   gameOn=false;
+   return;
+ }
+
+ current=current==="X"?"O":"X";
+ statusEl.textContent=current+"'s turn";
+
+ if(mode==="ai" && current==="O"){
+   setTimeout(aiMove,400);
+ }
+}
+
+function aiMove(){
+ let empty=board.map((v,i)=>v==""?i:null).filter(i=>i!=null);
+ let pick=empty[Math.floor(Math.random()*empty.length)];
+ move(pick);
+}
+
+function checkWin(p){
+ return wins.some(w=>w.every(i=>board[i]===p));
+}
+
+function resetGame(){
+ board=["","","","","","","","",""];
+ current="X";
+ gameOn=true;
+ drawBoard();
+ statusEl.textContent="X's turn";
+}
+
+drawBoard();
 </script>
 
 </body>
