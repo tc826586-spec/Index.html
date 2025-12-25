@@ -1,121 +1,209 @@
-`<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Gaming Hub – Play & Buy Games</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gaming Hub – Play & Buy Games</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
-     crossorigin="anonymous"></script>
-  
-  <!-- CSS -->
-  <link rel="stylesheet" href="style.css">
+/* ===== BODY ===== */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, #1a1f3c, #000);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ===== NAVBAR ===== */
+nav {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 30px;
+  background: rgba(0,0,0,0.6);
+}
+
+nav h2 {
+  color: #00eaff;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+/* ===== MAIN CONTAINER ===== */
+.container {
+  max-width: 1200px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* ===== HERO ===== */
+.hero {
+  text-align: center;
+  padding: 50px 20px;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+}
+
+.hero p {
+  margin: 10px 0 20px;
+  opacity: 0.8;
+}
+
+.hero button {
+  padding: 12px 25px;
+  background: #00eaff;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* ===== SECTION TITLES ===== */
+.section-title {
+  margin: 40px 0 20px;
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+/* ===== GRID ===== */
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* ===== GAME CARD ===== */
+.game-card {
+  background: #111;
+  border-radius: 15px;
+  padding: 15px;
+  text-align: center;
+  box-shadow: 0 0 20px rgba(0,0,0,0.6);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 25px #00eaff;
+}
+
+.game-card img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.game-card h3 {
+  margin: 10px 0;
+}
+
+.game-card button {
+  padding: 8px 18px;
+  background: #00eaff;
+  border: none;
+  border-radius: 15px;
+  cursor: pointer;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center;
+  padding: 20px;
+  opacity: 0.6;
+  margin-top: 40px;
+}
+
+/* ===== MOBILE ===== */
+@media (max-width: 600px) {
+  .hero h1 {
+    font-size: 2rem;
+  }
+}
+</style>
 </head>
+
 <body>
 
-<header class="gh-header">
-  <div class="logo">
-    <img src="images/E-sport Logo for Gamers, Raven.jpeg" alt="Gaming Hub Logo">
-    <span class="logo-text">Gaming Hub</span>
+<!-- ===== NAV ===== -->
+<nav>
+  <h2>🎮 Gaming Hub</h2>
+  <div>
+    <a href="#">Home</a>
+    <a href="#free">Free Games</a>
+    <a href="#buy">Buy Games</a>
+  </div>
+</nav>
+
+<!-- ===== MAIN ===== -->
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <h1>Play & Buy Your Favourite Games</h1>
+    <p>Play free games or buy premium games directly</p>
+    <button onclick="alert('Scroll Down')">Start Playing</button>
   </div>
 
-  <nav class="nav-links">
-    <a href="#play">Play</a>
-    <a href="#buy">Buy</a>
-    <a href="#feedback">Feedback</a>
-  </nav>
-</header>
-
-<section class="hero">
-  <h1>Play & Buy Your Favourite Games</h1>
-  <p>Enjoy free browser games and buy premium PC & console games.</p>
-  <a href="#play" class="btn-primary">Start Playing</a>
-</section>
-
-<section id="play" class="section">
-  <h2>Play Free Games</h2>
-
-  <div class="card-list">
-    <article class="game-row">
-      <div class="game-info">
-        <img src="images/566294.png">
-        <span>Tic Tac Toe</span>
-      </div>
-      <a href="games/tictactoe.html" target="_blank" class="btn-play">Play</a>
-    </article>
-
-  <div class="game-info">
-    <img src="runner-icon.png" alt="Endless Runner">
-    <span>Subway Runner</span>
-  </div>
-  <a href="games/endless-runner.html" target="_blank" class="btn-play">Play</a>
-    </article>
-
-    <article class="game-row">
-    <div class="game-icon">
-  <img src="images/chess.png" alt="Chess">
+  <!-- FREE GAMES -->
+  <h2 id="free" class="section-title">🎯 Free Games</h2>
+  <div class="games-grid">
+    <div class="game-card">
+      <img src="https://i.imgur.com/2yaf2wb.png">
+      <h3>Chess</h3>
+      <button onclick="location.href='games/chess.html'">Play</button>
     </div>
 
-    <article class="game-row">
-      <div class="game-info">
-        <img src="images/360_F_726345598_2bPzqF0v1e0zTInIw7rKqcyiOJkbh9Br.jpg">
-        <span>Snake</span>
-      </div>
-      <a href="games/snake.html" target="_blank" class="btn-play">Play</a>
-    </article>
+    <div class="game-card">
+      <img src="https://i.imgur.com/8p0XK7U.png">
+      <h3>2048</h3>
+      <button>Play</button>
+    </div>
 
-    <article class="game-row">
-      <div class="game-info">
-        <img src="images/images.jpg">
-        <span>2048</span>
-      </div>
-      <a href="games/2048.html" target="_blank" class="btn-play">Play</a>
-    </article>
-
-<section id="buy" class="section">
-  <h2>Buy Games</h2>
-
-  <div class="games-grid">
-
-    <article class="game-card">
-      <img src="images/a23af18e87007769016a334b1fb5c9c8.jpg">
-      <h3>GTA V</h3>
-      <p class="price">₹999</p>
-      <a class="btn-whatsapp" href="https://wa.me/919876543210">Buy on WhatsApp</a>
-    </article>
-
-    <article class="game-card">
-      <img src="images/COD modern ware fare 2 logo.jpeg">
-      <h3>Call of Duty</h3>
-      <p class="price">₹799</p>
-      <a class="btn-whatsapp" href="https://wa.me/919876543210">Buy on WhatsApp</a>
-    </article>
-
-    <article class="game-card">
-      <img src="images/download.jpg">
-      <h3>Minecraft</h3>
-      <p class="price">₹499</p>
-      <a class="btn-whatsapp" href="https://wa.me/919876543210">Buy on WhatsApp</a>
-    </article>
-
+    <div class="game-card">
+      <img src="https://i.imgur.com/vz4N6xD.png">
+      <h3>Snake</h3>
+      <button>Play</button>
+    </div>
   </div>
-</section>
 
-<section id="feedback" class="section">
-  <h2>Feedback</h2>
-  <form class="feedback-form">
-    <input type="text" placeholder="Your Name" required>
-    <input type="email" placeholder="Your Email" required>
-    <textarea placeholder="Message" required></textarea>
-    <button type="submit">Submit</button>
-  </form>
-</section>
+  <!-- BUY GAMES -->
+  <h2 id="buy" class="section-title">💳 Buy Games</h2>
+  <div class="games-grid">
+    <div class="game-card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png">
+      <h3>GTA V</h3>
+      <button>Buy ₹999</button>
+    </div>
 
+    <div class="game-card">
+      <img src="https://upload.wikimedia.org/wikipedia/en/4/4b/Call_of_Duty_Modern_Warfare_II_Key_Art.jpg">
+      <h3>Call of Duty</h3>
+      <button>Buy ₹899</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- FOOTER -->
 <footer>
-  © 2025 Gaming Hub. All rights reserved.
+  © 2025 Gaming Hub | All Rights Reserved
 </footer>
 
 </body>
