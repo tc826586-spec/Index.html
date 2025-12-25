@@ -62,8 +62,8 @@ button{
 
 <script>
 const board = document.getElementById("board");
-
 let selected = null;
+let hints = [];
 
 let pieces = [
 "♜","♞","♝","♛","♚","♝","♞","♜",
@@ -78,13 +78,15 @@ let pieces = [
 
 function drawBoard(){
   board.innerHTML = "";
-  pieces.forEach((piece, i) => {
+  pieces.forEach((p, i) => {
     const sq = document.createElement("div");
     sq.className = "square " + ((Math.floor(i/8)+i)%2 ? "dark":"light");
-    sq.textContent = piece;
 
+    if(i === selected) sq.classList.add("selected");
+    if(hints.includes(i)) sq.classList.add("hint");
+
+    sq.textContent = p;
     sq.onclick = () => handleClick(i);
-
     board.appendChild(sq);
   });
 }
@@ -93,17 +95,32 @@ function handleClick(i){
   if(selected === null){
     if(pieces[i] !== ""){
       selected = i;
+      showHints(i);
     }
   } else {
-    pieces[i] = pieces[selected];
-    pieces[selected] = "";
+    if(hints.includes(i)){
+      pieces[i] = pieces[selected];
+      pieces[selected] = "";
+    }
     selected = null;
-    drawBoard();
+    hints = [];
   }
+  drawBoard();
 }
 
-function reset(){
-  location.reload();
+function showHints(i){
+  hints = [];
+  let r = Math.floor(i/8);
+  let c = i % 8;
+
+  // simple hints: up, down, left, right
+  [[1,0],[-1,0],[0,1],[0,-1]].forEach(d=>{
+    let nr = r + d[0];
+    let nc = c + d[1];
+    if(nr>=0 && nr<8 && nc>=0 && nc<8){
+      hints.push(nr*8 + nc);
+    }
+  });
 }
 
 drawBoard();
