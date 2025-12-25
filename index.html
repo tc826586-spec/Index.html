@@ -6,110 +6,129 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #0f172a, #020617);
-  color: white;
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  background:radial-gradient(circle at top,#0f172a,#020617);
+  color:#fff;
+}
+nav{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:14px 25px;
+}
+nav h1{color:#00e5ff}
+nav a{color:#fff;margin-left:15px;text-decoration:none}
+
+.hero{
+  text-align:center;
+  padding:70px 20px;
+}
+.hero button{
+  padding:12px 26px;
+  border:none;
+  border-radius:25px;
+  background:#00e5ff;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-/* Navbar */
-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 14px 25px;
-  background: #020617;
-}
-nav h1 {
-  color: #00e5ff;
-}
-nav a {
-  color: white;
-  margin-left: 15px;
-  text-decoration: none;
+.section{padding:50px 20px}
+.section h2{text-align:center;margin-bottom:30px}
+
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:25px;
 }
 
-/* Hero */
-.hero {
-  text-align: center;
-  padding: 80px 20px;
+.card{
+  background:#111827;
+  border-radius:16px;
+  padding:16px;
+  text-align:center;
+  box-shadow:0 0 18px rgba(0,255,255,.2);
 }
-.hero h2 {
-  font-size: 38px;
-}
-.hero p {
-  color: #9ca3af;
-}
-.hero button {
-  margin-top: 20px;
-  padding: 12px 26px;
-  border: none;
-  border-radius: 25px;
-  background: #00e5ff;
-  font-weight: bold;
-  cursor: pointer;
+.card h3{margin:10px 0 5px}
+.card p{color:#9ca3af;font-size:14px}
+
+.icon{
+  height:140px;
+  border-radius:12px;
+  background:#0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:46px;
+  color:#00e5ff;
 }
 
-/* Sections */
-.section {
-  padding: 60px 20px;
-}
-.section h2 {
-  text-align: center;
-  margin-bottom: 35px;
-}
-
-/* Game Cards */
-.grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px,1fr));
-  gap: 25px;
+.play-btn{
+  margin-top:10px;
+  padding:8px 22px;
+  border:none;
+  border-radius:20px;
+  background:#00e5ff;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.card {
-  background: #111827;
-  border-radius: 14px;
-  padding: 15px;
-  text-align: center;
-  box-shadow: 0 0 15px rgba(0,255,255,.15);
-  transition: .3s;
+/* GAME AREA */
+#gameArea{
+  display:none;
+  padding:30px;
+  text-align:center;
 }
-.card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 0 30px rgba(0,255,255,.4);
+canvas{background:#000;margin-top:15px}
+
+/* Tic Tac Toe */
+.board{
+  display:grid;
+  grid-template-columns:repeat(3,100px);
+  gap:6px;
+  justify-content:center;
+}
+.cell{
+  width:100px;height:100px;
+  background:#0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:40px;
+  cursor:pointer;
 }
 
-.card img {
-  width: 100%;
-  height: 140px;
-  border-radius: 10px;
-  object-fit: cover;
+/* Memory */
+.mem-grid{
+  display:grid;
+  grid-template-columns:repeat(4,70px);
+  gap:10px;
+  justify-content:center;
+}
+.mem{
+  width:70px;height:70px;
+  background:#0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:24px;
+  cursor:pointer;
 }
 
-.card h3 {
-  margin: 12px 0 5px;
+/* 2048 */
+.grid2048{
+  display:grid;
+  grid-template-columns:repeat(4,60px);
+  gap:5px;
+  justify-content:center;
 }
-.card p {
-  color: #9ca3af;
-  font-size: 14px;
-}
-
-.btn {
-  margin-top: 10px;
-  padding: 8px 20px;
-  border-radius: 20px;
-  border: none;
-  background: #00e5ff;
-  font-weight: bold;
-  cursor: pointer;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 20px;
-  color: #9ca3af;
+.tile{
+  width:60px;height:60px;
+  background:#0f172a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 </style>
 </head>
@@ -119,105 +138,170 @@ footer {
 <nav>
   <h1>🎮 Gaming Adda</h1>
   <div>
+    <a href="#">Home</a>
     <a href="#free">Free Games</a>
-    <a href="#buy">Buy Games</a>
   </div>
 </nav>
 
 <section class="hero">
   <h2>Play & Buy Your Favourite Games</h2>
-  <p>Play free games or buy premium games directly</p>
+  <p>Play free games directly on this website</p>
   <button onclick="scrollToGames()">Start Playing</button>
 </section>
 
-<!-- FREE GAMES -->
 <section class="section" id="free">
-  <h2>🎯 Free Games</h2>
-  <div class="grid">
+<h2>🎯 Free Games</h2>
 
-    <div class="card">
-      <img src="https://i.imgur.com/1X6RZ6m.png">
-      <h3>Chess</h3>
-      <p>Classic strategy game</p>
-      <button class="btn" onclick="playGame('Chess')">Play</button>
-    </div>
+<div class="grid">
 
-    <div class="card">
-      <img src="https://i.imgur.com/Lx2Qp9z.png">
-      <h3>2048</h3>
-      <p>Number merging puzzle</p>
-      <button class="btn" onclick="playGame('2048')">Play</button>
-    </div>
+<div class="card">
+  <div class="icon">🐍</div>
+  <h3>Snake</h3>
+  <p>Classic snake game</p>
+  <button class="play-btn" onclick="openGame('snake')">Play</button>
+</div>
 
-    <div class="card">
-      <img src="https://i.imgur.com/1qVZ1Zl.png">
-      <h3>Snake</h3>
-      <p>Classic snake game</p>
-      <button class="btn" onclick="playGame('Snake')">Play</button>
-    </div>
+<div class="card">
+  <div class="icon">❌⭕</div>
+  <h3>Tic Tac Toe</h3>
+  <p>2 Player mode</p>
+  <button class="play-btn" onclick="openGame('ttt')">Play</button>
+</div>
 
-    <div class="card">
-      <img src="https://i.imgur.com/jnJ6Eo7.png">
-      <h3>Tic Tac Toe</h3>
-      <p>AI & 2 Player Mode</p>
-      <button class="btn" onclick="playGame('Tic Tac Toe')">Play</button>
-    </div>
+<div class="card">
+  <div class="icon">🧠</div>
+  <h3>Memory Game</h3>
+  <p>Brain challenge</p>
+  <button class="play-btn" onclick="openGame('memory')">Play</button>
+</div>
 
-    <div class="card">
-      <img src="https://i.imgur.com/QxZ7K9Y.png">
-      <h3>Flappy Bird</h3>
-      <p>Tap to fly</p>
-      <button class="btn" onclick="playGame('Flappy Bird')">Play</button>
-    </div>
+<div class="card">
+  <div class="icon">2048</div>
+  <h3>2048</h3>
+  <p>Number merging puzzle</p>
+  <button class="play-btn" onclick="openGame('g2048')">Play</button>
+</div>
 
-    <div class="card">
-      <img src="https://i.imgur.com/c9VZbW4.png">
-      <h3>Memory Game</h3>
-      <p>Brain challenge</p>
-      <button class="btn" onclick="playGame('Memory Game')">Play</button>
-    </div>
-
-  </div>
+</div>
 </section>
 
-<!-- BUY GAMES -->
-<section class="section" id="buy">
-  <h2>💎 Premium Games</h2>
-  <div class="grid">
+<!-- GAME AREA -->
+<section id="gameArea">
+<h2 id="gameTitle"></h2>
 
-    <div class="card">
-      <img src="https://i.imgur.com/Y6B1E9F.png">
-      <h3>3D Chess Pro</h3>
-      <p>Advanced AI + 3D Board</p>
-      <button class="btn" onclick="buyGame('3D Chess Pro',99)">Buy ₹99</button>
-    </div>
+<canvas id="snakeCanvas" width="300" height="300" style="display:none"></canvas>
 
-    <div class="card">
-      <img src="https://i.imgur.com/WlH0F0F.png">
-      <h3>Endless Runner</h3>
-      <p>Fast paced action</p>
-      <button class="btn" onclick="buyGame('Endless Runner',79)">Buy ₹79</button>
-    </div>
+<div id="tttGame" style="display:none"></div>
+<div id="memoryGame" style="display:none"></div>
+<div id="game2048" style="display:none"></div>
 
-  </div>
 </section>
-
-<footer>
-  © 2025 Gaming Adda | All Rights Reserved
-</footer>
 
 <script>
-function playGame(game) {
-  alert("Launching " + game + " (demo)");
-}
-
-function buyGame(game, price) {
-  alert("Buying " + game + " for ₹" + price);
-  // Razorpay / UPI can be added here
-}
-
-function scrollToGames() {
+function scrollToGames(){
   document.getElementById("free").scrollIntoView({behavior:"smooth"});
+}
+
+function openGame(game){
+  document.getElementById("gameArea").style.display="block";
+  document.querySelectorAll("#gameArea > *").forEach(e=>e.style.display="none");
+  document.getElementById("gameTitle").style.display="block";
+
+  if(game==="snake"){ startSnake(); }
+  if(game==="ttt"){ startTTT(); }
+  if(game==="memory"){ startMemory(); }
+  if(game==="g2048"){ start2048(); }
+
+  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+}
+
+/* SNAKE */
+const canvas=document.getElementById("snakeCanvas");
+const ctx=canvas.getContext("2d");
+let snake=[[10,10]],dx=1,dy=0,food=[5,5];
+
+function startSnake(){
+  document.getElementById("gameTitle").innerText="Snake";
+  canvas.style.display="block";
+}
+
+function drawSnake(){
+  ctx.fillStyle="black";
+  ctx.fillRect(0,0,300,300);
+  ctx.fillStyle="lime";
+  snake.forEach(p=>ctx.fillRect(p[0]*15,p[1]*15,15,15));
+  ctx.fillStyle="red";
+  ctx.fillRect(food[0]*15,food[1]*15,15,15);
+
+  let h=[snake[0][0]+dx,snake[0][1]+dy];
+  if(h[0]==food[0]&&h[1]==food[1]){
+    food=[Math.floor(Math.random()*20),Math.floor(Math.random()*20)];
+  } else snake.pop();
+  snake.unshift(h);
+}
+setInterval(drawSnake,150);
+document.addEventListener("keydown",e=>{
+  if(e.key=="ArrowUp"){dx=0;dy=-1}
+  if(e.key=="ArrowDown"){dx=0;dy=1}
+  if(e.key=="ArrowLeft"){dx=-1;dy=0}
+  if(e.key=="ArrowRight"){dx=1;dy=0}
+});
+
+/* TTT */
+function startTTT(){
+  document.getElementById("gameTitle").innerText="Tic Tac Toe";
+  const g=document.getElementById("tttGame");
+  g.style.display="grid";
+  g.className="board";
+  g.innerHTML="";
+  let t="X";
+  for(let i=0;i<9;i++){
+    let c=document.createElement("div");
+    c.className="cell";
+    c.onclick=()=>{if(!c.innerText){c.innerText=t;t=t=="X"?"O":"X";}};
+    g.appendChild(c);
+  }
+}
+
+/* MEMORY */
+function startMemory(){
+  document.getElementById("gameTitle").innerText="Memory Game";
+  const g=document.getElementById("memoryGame");
+  g.style.display="grid";
+  g.className="mem-grid";
+  g.innerHTML="";
+  let arr=["🍎","🍌","🍇","🍒","🍎","🍌","🍇","🍒"].sort(()=>0.5-Math.random());
+  let first=null;
+  arr.forEach(v=>{
+    let d=document.createElement("div");
+    d.className="mem";
+    d.onclick=()=>{
+      d.textContent=v;
+      if(!first) first=d;
+      else{
+        if(first.textContent!=d.textContent){
+          setTimeout(()=>{first.textContent="";d.textContent="";},500);
+        }
+        first=null;
+      }
+    }
+    g.appendChild(d);
+  });
+}
+
+/* 2048 (basic) */
+function start2048(){
+  document.getElementById("gameTitle").innerText="2048";
+  const g=document.getElementById("game2048");
+  g.style.display="grid";
+  g.className="grid2048";
+  g.innerHTML="";
+  for(let i=0;i<16;i++){
+    let d=document.createElement("div");
+    d.className="tile";
+    d.innerText=Math.random()>0.7?2:"";
+    g.appendChild(d);
+  }
 }
 </script>
 
