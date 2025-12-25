@@ -190,36 +190,44 @@ function aiMove(){
 }
 
 function getMoves(i){
-  let p=board[i];
-  let r=Math.floor(i/8), c=i%8;
-  let res=[];
-  const dir=p==="P"?-1:p==="p"?1:0;
+  let p = board[i];
+  if(!p) return [];
 
-  if(p==="P"||p==="p"){
-    let n=i+dir*8;
-    if(board[n]==="") res.push(n);
+  let r = Math.floor(i/8), c = i%8;
+  let res = [];
+
+  // PAWN
+  if(p === "P"){
+    let n = i - 8;
+    if(n >= 0 && board[n] === "") res.push(n);
+  }
+  if(p === "p"){
+    let n = i + 8;
+    if(n < 64 && board[n] === "") res.push(n);
   }
 
-  const knight=[[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]];
+  // KNIGHT
   if("Nn".includes(p)){
-    knight.forEach(d=>{
+    [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
+    .forEach(d=>{
       let nr=r+d[0], nc=c+d[1];
       if(nr>=0&&nr<8&&nc>=0&&nc<8){
         let t=nr*8+nc;
-        if(board[t]===""||isEnemy(p,board[t])) res.push(t);
+        if(board[t]==="" || isEnemy(p,board[t])) res.push(t);
       }
     });
   }
 
-  const lines={
+  // BISHOP / ROOK / QUEEN
+  const dirs = {
     B:[[1,1],[1,-1],[-1,1],[-1,-1]],
     R:[[1,0],[-1,0],[0,1],[0,-1]],
     Q:[[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]
   };
 
-  if("BRQbrq".includes(p)){
-    let key=p.toUpperCase();
-    lines[key].forEach(d=>{
+  let key = p.toUpperCase();
+  if(dirs[key]){
+    dirs[key].forEach(d=>{
       let nr=r+d[0], nc=c+d[1];
       while(nr>=0&&nr<8&&nc>=0&&nc<8){
         let t=nr*8+nc;
@@ -233,6 +241,7 @@ function getMoves(i){
     });
   }
 
+  // KING
   if("Kk".includes(p)){
     for(let dr=-1;dr<=1;dr++)
       for(let dc=-1;dc<=1;dc++){
