@@ -5,93 +5,114 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gaming Adda – Play Games</title>
 
-<!-- ===== ADSENSE (CORRECT PLACE) ===== -->
+<!-- Adsense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
 crossorigin="anonymous"></script>
 
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-
 body{
-  font-family: Arial, Helvetica, sans-serif;
-  background: radial-gradient(circle at top, #1a1f3c, #000);
+  font-family:Arial,Helvetica,sans-serif;
+  background:linear-gradient(180deg,#0a0f2c,#000);
   color:#fff;
 }
 
+/* NAVBAR */
 nav{
   display:flex;
   justify-content:space-between;
+  align-items:center;
   padding:15px 30px;
-  background:rgba(0,0,0,0.6);
+}
+nav h2{color:#00f2ff}
+nav a{
+  color:#fff;
+  text-decoration:none;
+  margin-left:20px;
 }
 
-nav h2{color:#00eaff}
-nav a{color:white;text-decoration:none;margin-left:20px}
-
-.container{max-width:1200px;margin:auto;padding:20px}
-
-.hero{text-align:center;padding:50px 20px}
-.hero h1{font-size:2.5rem}
-.hero p{opacity:.8;margin:10px 0 20px}
+/* HERO */
+.hero{
+  text-align:center;
+  padding:80px 20px;
+}
+.hero h1{font-size:3rem}
+.hero p{opacity:.8;margin:10px 0 25px}
 .hero button{
-  padding:12px 25px;
-  background:#00eaff;
+  padding:14px 30px;
+  background:#00f2ff;
   border:none;
+  border-radius:25px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* SECTIONS */
+.section-title{
+  text-align:center;
+  margin:40px 0 20px;
+  font-size:1.7rem;
+}
+
+/* GAME GRID */
+.games-grid{
+  max-width:1200px;
+  margin:auto;
+  padding:0 20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+
+.game-card{
+  background:#111827;
+  border-radius:18px;
+  padding:15px;
+  text-align:center;
+  transition:.3s;
+}
+.game-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 0 30px #00f2ff;
+}
+.game-card img{
+  width:100%;
+  height:160px;
+  object-fit:cover;
+  border-radius:14px;
+}
+.game-card h3{margin:12px 0}
+.game-card button{
+  background:#00f2ff;
+  border:none;
+  padding:9px 20px;
   border-radius:20px;
   font-weight:bold;
   cursor:pointer;
 }
 
-.section-title{text-align:center;margin:40px 0 20px}
-
-.games-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-}
-
-.game-card{
-  background:#111;
-  border-radius:15px;
-  padding:15px;
-  text-align:center;
-  transition:.3s;
-}
-
-.game-card:hover{
-  transform:translateY(-5px);
-  box-shadow:0 0 25px #00eaff;
-}
-
-.game-card img{
-  width:100%;
-  height:160px;
-  object-fit:cover;
-  border-radius:10px;
-}
-
-.game-card button{
-  padding:8px 18px;
-  background:#00eaff;
-  border:none;
-  border-radius:15px;
-  margin-top:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* ===== GAME AREA ===== */
+/* GAME AREA */
 #gameArea{
   display:none;
-  margin-top:40px;
-  background:#0a0a0a;
+  max-width:1200px;
+  margin:60px auto;
   padding:20px;
-  border-radius:15px;
+  background:#020617;
+  border-radius:18px;
+}
+.gameBox{display:none}
+
+/* FOOTER */
+footer{
+  text-align:center;
+  margin:50px 0;
+  opacity:.6;
 }
 
-.gameBox{display:none;text-align:center}
-
-footer{text-align:center;margin:40px 0;opacity:.6}
+/* MOBILE */
+@media(max-width:600px){
+  .hero h1{font-size:2.2rem}
+}
 </style>
 </head>
 
@@ -106,94 +127,91 @@ footer{text-align:center;margin:40px 0;opacity:.6}
   </div>
 </nav>
 
-<div class="container">
+<div class="hero">
+  <h1>Play & Buy Your Favourite Games</h1>
+  <p>Play free games or buy premium games directly</p>
+  <button onclick="scrollToFree()">Start Playing</button>
+</div>
 
-  <div class="hero">
-    <h1>Play & Buy Your Favourite Games</h1>
-    <p>Play free games or buy premium games directly</p>
-    <button onclick="scrollToGames()">Start Playing</button>
+<h2 id="free" class="section-title">🎯 Free Games</h2>
+
+<div class="games-grid">
+  <div class="game-card">
+    <img src="https://via.placeholder.com/400x200?text=Chess">
+    <h3>Chess</h3>
+    <button onclick="openGame('chess')">Play</button>
   </div>
 
-  <!-- ADS -->
-  <ins class="adsbygoogle"
-    style="display:block"
-    data-ad-client="ca-pub-3278025401135303"
-    data-ad-slot="7267749291"
-    data-ad-format="auto"
-    data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle=window.adsbygoogle||[]).push({});</script>
-
-  <!-- FREE GAMES -->
-  <h2 id="free" class="section-title">🎯 Free Games</h2>
-  <div class="games-grid">
-    <div class="game-card">
-      <img src="https://via.placeholder.com/300x160?text=Chess">
-      <h3>Chess</h3>
-      <button onclick="openGame('chess')">Play</button>
-    </div>
-
-    <div class="game-card">
-      <img src="https://via.placeholder.com/300x160?text=2048">
-      <h3>2048</h3>
-      <button onclick="openGame('2048')">Play</button>
-    </div>
-
-    <div class="game-card">
-      <img src="https://via.placeholder.com/300x160?text=Snake">
-      <h3>Snake</h3>
-      <button onclick="openGame('snake')">Play</button>
-    </div>
+  <div class="game-card">
+    <img src="https://via.placeholder.com/400x200?text=2048">
+    <h3>2048</h3>
+    <button onclick="openGame('g2048')">Play</button>
   </div>
 
-  <!-- BUY GAMES -->
-  <h2 id="buy" class="section-title">💳 Buy Games</h2>
-  <div class="games-grid">
-    <div class="game-card">
-      <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png">
-      <h3>GTA V</h3>
-      <button onclick="buyGame()">Buy ₹999</button>
-    </div>
+  <div class="game-card">
+    <img src="https://via.placeholder.com/400x200?text=Snake">
+    <h3>Snake</h3>
+    <button onclick="openGame('snake')">Play</button>
   </div>
 
-  <!-- GAME AREA -->
-  <div id="gameArea">
-    <h2 id="gameTitle"></h2>
+  <div class="game-card">
+  <img src="image-url">
+  <h3>Flappy Bird</h3>
+  <button onclick="openGame('flappy')">Play</button>
+</div>
 
-    <div id="chessGame" class="gameBox">
-      <!-- 👉 PASTE YOUR CHESS GAME CODE HERE -->
-      <p>Chess Game Area</p>
-    </div>
+ <div id="flappy" class="gameBox">
+  <!-- PASTE FLAPPY BIRD GAME CODE -->
+</div> 
 
-    <div id="2048Game" class="gameBox">
-      <!-- 👉 PASTE YOUR 2048 GAME CODE HERE -->
-      <p>2048 Game Area</p>
-    </div>
+  <!-- ✅ ADD NEW GAME CARD HERE (NO UI CHANGE) -->
+</div>
 
-    <div id="snakeGame" class="gameBox">
-      <!-- 👉 PASTE YOUR SNAKE GAME CODE HERE -->
-      <p>Snake Game Area</p>
-    </div>
+<h2 id="buy" class="section-title">💳 Buy Games</h2>
+
+<div class="games-grid">
+  <div class="game-card">
+    <img src="https://upload.wikimedia.org/wikipedia/en/a/a5/Grand_Theft_Auto_V.png">
+    <h3>GTA V</h3>
+    <button onclick="alert('Payment Coming Soon')">Buy ₹999</button>
+  </div>
+</div>
+
+<!-- GAME AREA -->
+<div id="gameArea">
+  <h2 id="gameTitle"></h2>
+
+  <div id="chess" class="gameBox">
+    <!-- PASTE CHESS GAME CODE HERE -->
+    <p>Chess Game Area</p>
   </div>
 
+  <div id="g2048" class="gameBox">
+    <!-- PASTE 2048 GAME CODE HERE -->
+    <p>2048 Game Area</p>
+  </div>
+
+  <div id="snake" class="gameBox">
+    <!-- PASTE SNAKE GAME CODE HERE -->
+    <p>Snake Game Area</p>
+  </div>
+
+  <!-- ✅ ADD NEW GAME DIV HERE -->
 </div>
 
 <footer>© 2025 Gaming Adda | All Rights Reserved</footer>
 
 <script>
-function scrollToGames(){
+function scrollToFree(){
   document.getElementById("free").scrollIntoView({behavior:"smooth"});
 }
 
-function openGame(game){
+function openGame(id){
   document.getElementById("gameArea").style.display="block";
   document.querySelectorAll(".gameBox").forEach(g=>g.style.display="none");
-  document.getElementById(game+"Game").style.display="block";
-  document.getElementById("gameTitle").innerText = game.toUpperCase();
+  document.getElementById(id).style.display="block";
+  document.getElementById("gameTitle").innerText=id.toUpperCase();
   window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
-}
-
-function buyGame(){
-  alert("Payment integration coming soon");
 }
 </script>
 
