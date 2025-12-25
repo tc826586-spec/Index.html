@@ -18,25 +18,30 @@ body{
   justify-content:center;
 }
 
-#board{
+.board{
   display:grid;
-  grid-template-columns:repeat(8,40px);
-  grid-template-rows:repeat(8,40px);
-  border:2px solid #22d3ee;
+  grid-template-columns:repeat(8,50px);
+  width:400px;
+  margin:auto;
 }
-
 .square{
-  width:40px;
-  height:40px;
+  width:50px;
+  height:50px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:26px;
+  font-size:32px;
   cursor:pointer;
 }
+.light{background:#eee}
+.dark{background:#555;color:white}
 
-.light{background:#e5e7eb;color:black;}
-.dark{background:#374151;color:white;}
+.hint{
+  background:lime !important;
+}
+.selected{
+  outline:3px solid yellow;
+}
 
 button{
   margin:6px;
@@ -53,7 +58,7 @@ button{
 
 <h2>Chess vs AI</h2>
 
-<div id="board"></div>
+<div id="board" class="board"></div>
 
 <div id="status">Your move</div>
 
@@ -61,6 +66,8 @@ button{
 <button onclick="location.href='../index.html'">Back</button>
 
 <script>
+document.addEventListener("DOMContentLoaded", () => {
+
 const board = document.getElementById("board");
 let selected = null;
 let hints = [];
@@ -76,54 +83,48 @@ let pieces = [
 "♖","♘","♗","♕","♔","♗","♘","♖"
 ];
 
-function drawBoard(){
-  board.innerHTML = "";
-  pieces.forEach((p, i) => {
-    const sq = document.createElement("div");
-    sq.className = "square " + ((Math.floor(i/8)+i)%2 ? "dark":"light");
-
-    if(i === selected) sq.classList.add("selected");
-    if(hints.includes(i)) sq.classList.add("hint");
-
-    sq.textContent = p;
-    sq.onclick = () => handleClick(i);
-    board.appendChild(sq);
+function draw(){
+  board.innerHTML="";
+  pieces.forEach((p,i)=>{
+    const s=document.createElement("div");
+    s.className="square "+(((i+Math.floor(i/8))%2)?"dark":"light");
+    if(i===selected)s.classList.add("selected");
+    if(hints.includes(i))s.classList.add("hint");
+    s.textContent=p;
+    s.onclick=()=>click(i);
+    board.appendChild(s);
   });
 }
 
-function handleClick(i){
-  if(selected === null){
-    if(pieces[i] !== ""){
-      selected = i;
-      showHints(i);
-    }
-  } else {
-    if(hints.includes(i)){
-      pieces[i] = pieces[selected];
-      pieces[selected] = "";
-    }
-    selected = null;
-    hints = [];
+function click(i){
+  if(selected===null && pieces[i]!==""){
+    selected=i;
+    showHints(i);
+  }else if(hints.includes(i)){
+    pieces[i]=pieces[selected];
+    pieces[selected]="";
+    selected=null;
+    hints=[];
+  }else{
+    selected=null;
+    hints=[];
   }
-  drawBoard();
+  draw();
 }
 
 function showHints(i){
-  hints = [];
-  let r = Math.floor(i/8);
-  let c = i % 8;
-
-  // simple hints: up, down, left, right
+  hints=[];
+  let r=Math.floor(i/8), c=i%8;
   [[1,0],[-1,0],[0,1],[0,-1]].forEach(d=>{
-    let nr = r + d[0];
-    let nc = c + d[1];
-    if(nr>=0 && nr<8 && nc>=0 && nc<8){
-      hints.push(nr*8 + nc);
+    let nr=r+d[0], nc=c+d[1];
+    if(nr>=0&&nr<8&&nc>=0&&nc<8){
+      hints.push(nr*8+nc);
     }
   });
 }
 
-drawBoard();
+draw();
+});
 </script>
 
 </body>
