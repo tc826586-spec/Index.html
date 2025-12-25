@@ -156,6 +156,13 @@ a {
   filter: brightness(1.1);
 }
 
+.hint {
+  background: rgba(0, 255, 0, 0.4) !important;
+}
+.selected {
+  outline: 3px solid yellow;
+}
+
 /* ---------- BUY GAMES GRID ---------- */
 .games-grid {
   display: flex;
