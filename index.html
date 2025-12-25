@@ -5,26 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gaming Adda – Play Games</title>
 
-<!-- Adsense -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3278025401135303"
-crossorigin="anonymous"></script>
-
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:Arial,Helvetica,sans-serif;
-  background:linear-gradient(180deg,#0a0f2c,#000);
+  background:linear-gradient(180deg,#0b102c,#000);
   color:#fff;
 }
 
-/* NAVBAR */
+/* NAV */
 nav{
   display:flex;
   justify-content:space-between;
   align-items:center;
   padding:15px 30px;
 }
-nav h2{color:#00f2ff}
+nav h2{color:#00eaff}
 nav a{
   color:#fff;
   text-decoration:none;
@@ -40,21 +36,21 @@ nav a{
 .hero p{opacity:.8;margin:10px 0 25px}
 .hero button{
   padding:14px 30px;
-  background:#00f2ff;
+  background:#00eaff;
   border:none;
   border-radius:25px;
   font-weight:bold;
   cursor:pointer;
 }
 
-/* SECTIONS */
+/* TITLES */
 .section-title{
   text-align:center;
   margin:40px 0 20px;
   font-size:1.7rem;
 }
 
-/* GAME GRID */
+/* GRID */
 .games-grid{
   max-width:1200px;
   margin:auto;
@@ -73,7 +69,7 @@ nav a{
 }
 .game-card:hover{
   transform:translateY(-6px);
-  box-shadow:0 0 30px #00f2ff;
+  box-shadow:0 0 30px #00eaff;
 }
 .game-card img{
   width:100%;
@@ -83,7 +79,7 @@ nav a{
 }
 .game-card h3{margin:12px 0}
 .game-card button{
-  background:#00f2ff;
+  background:#00eaff;
   border:none;
   padding:9px 20px;
   border-radius:20px;
@@ -91,16 +87,39 @@ nav a{
   cursor:pointer;
 }
 
-/* GAME AREA */
-#gameArea{
+/* GAME MODAL */
+#gameModal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.9);
   display:none;
-  max-width:1200px;
-  margin:60px auto;
-  padding:20px;
-  background:#020617;
-  border-radius:18px;
+  z-index:999;
 }
-.gameBox{display:none}
+#gameBox{
+  width:90%;
+  height:90%;
+  margin:3% auto;
+  background:#000;
+  border-radius:16px;
+  overflow:hidden;
+  position:relative;
+}
+#gameBox iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+#closeBtn{
+  position:absolute;
+  top:10px;
+  right:15px;
+  background:#00eaff;
+  border:none;
+  padding:6px 14px;
+  border-radius:20px;
+  cursor:pointer;
+  font-weight:bold;
+}
 
 /* FOOTER */
 footer{
@@ -136,35 +155,32 @@ footer{
 <h2 id="free" class="section-title">🎯 Free Games</h2>
 
 <div class="games-grid">
+
   <div class="game-card">
     <img src="https://via.placeholder.com/400x200?text=Chess">
     <h3>Chess</h3>
-    <button onclick="openGame('chess')">Play</button>
+    <button onclick="playGame('games/chess.html')">Play</button>
   </div>
 
   <div class="game-card">
     <img src="https://via.placeholder.com/400x200?text=2048">
     <h3>2048</h3>
-    <button onclick="openGame('g2048')">Play</button>
+    <button onclick="playGame('games/2048.html')">Play</button>
   </div>
 
   <div class="game-card">
     <img src="https://via.placeholder.com/400x200?text=Snake">
     <h3>Snake</h3>
-    <button onclick="openGame('snake')">Play</button>
+    <button onclick="playGame('games/snake.html')">Play</button>
   </div>
 
   <div class="game-card">
-  <img src="image-url">
+  <img src="https://via.placeholder.com/400x200?text=Flappy">
   <h3>Flappy Bird</h3>
-  <button onclick="openGame('flappy')">Play</button>
+  <button onclick="playGame('games/flappy.html')">Play</button>
 </div>
 
- <div id="flappy" class="gameBox">
-  <!-- PASTE FLAPPY BIRD GAME CODE -->
-</div> 
-
-  <!-- ✅ ADD NEW GAME CARD HERE (NO UI CHANGE) -->
+  <!-- ✅ ADD NEW GAME CARD HERE -->
 </div>
 
 <h2 id="buy" class="section-title">💳 Buy Games</h2>
@@ -177,41 +193,27 @@ footer{
   </div>
 </div>
 
-<!-- GAME AREA -->
-<div id="gameArea">
-  <h2 id="gameTitle"></h2>
-
-  <div id="chess" class="gameBox">
-    <!-- PASTE CHESS GAME CODE HERE -->
-    <p>Chess Game Area</p>
-  </div>
-
-  <div id="g2048" class="gameBox">
-    <!-- PASTE 2048 GAME CODE HERE -->
-    <p>2048 Game Area</p>
-  </div>
-
-  <div id="snake" class="gameBox">
-    <!-- PASTE SNAKE GAME CODE HERE -->
-    <p>Snake Game Area</p>
-  </div>
-
-  <!-- ✅ ADD NEW GAME DIV HERE -->
-</div>
-
 <footer>© 2025 Gaming Adda | All Rights Reserved</footer>
+
+<!-- GAME MODAL -->
+<div id="gameModal">
+  <div id="gameBox">
+    <button id="closeBtn" onclick="closeGame()">Close ✖</button>
+    <iframe id="gameFrame"></iframe>
+  </div>
+</div>
 
 <script>
 function scrollToFree(){
   document.getElementById("free").scrollIntoView({behavior:"smooth"});
 }
-
-function openGame(id){
-  document.getElementById("gameArea").style.display="block";
-  document.querySelectorAll(".gameBox").forEach(g=>g.style.display="none");
-  document.getElementById(id).style.display="block";
-  document.getElementById("gameTitle").innerText=id.toUpperCase();
-  window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});
+function playGame(path){
+  document.getElementById("gameFrame").src = path;
+  document.getElementById("gameModal").style.display="block";
+}
+function closeGame(){
+  document.getElementById("gameFrame").src = "";
+  document.getElementById("gameModal").style.display="none";
 }
 </script>
 
