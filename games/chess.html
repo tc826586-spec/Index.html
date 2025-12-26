@@ -1,20 +1,28 @@
-<div id="chessContainer" style="display:flex;flex-direction:column;align-items:center;">
+<!-- CHESS CONTAINER -->
+<div style="display:flex;flex-direction:column;align-items:center;">
   <div id="board" style="width:320px;"></div>
   <div id="status" style="margin-top:10px;"></div>
+  <button onclick="resetGame()" style="margin-top:10px;">Restart Game</button>
 </div>
 
-<!-- REQUIRED CSS -->
-<link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+<!-- 1️⃣ LOAD CSS FIRST -->
+<link rel="stylesheet"
+href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
 
-<!-- REQUIRED JS -->
+<!-- 2️⃣ LOAD LIBRARIES (ORDER MATTERS!) -->
 <script src="https://unpkg.com/chess.js@0.12.0/chess.min.js"></script>
 <script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
+<!-- 3️⃣ CHESS SCRIPT -->
 <script>
+let board;
+let game;
+
 document.addEventListener("DOMContentLoaded", function () {
 
-  let game = new Chess();
-  let board = Chessboard('board', {
+  game = new Chess();
+
+  board = Chessboard('board', {
     draggable: true,
     position: 'start',
 
@@ -23,13 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (
         (game.turn() === 'w' && piece.startsWith('b')) ||
         (game.turn() === 'b' && piece.startsWith('w'))
-      ) {
-        return false;
-      }
+      ) return false;
     },
 
     onDrop: function (source, target) {
-      let move = game.move({
+      const move = game.move({
         from: source,
         to: target,
         promotion: 'q'
@@ -44,30 +50,28 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  function updateStatus() {
-    let status = '';
-    let moveColor = game.turn() === 'w' ? 'White' : 'Black';
+  updateStatus();
+});
 
-    if (game.in_checkmate()) {
-      status = `Game Over – ${moveColor} is checkmated`;
-    } else if (game.in_draw()) {
-      status = 'Game Draw';
-    } else {
-      status = `${moveColor} to move`;
-      if (game.in_check()) status += ' (Check)';
-    }
+function updateStatus() {
+  let status = '';
+  let moveColor = game.turn() === 'w' ? 'White' : 'Black';
 
-    document.getElementById('status').innerText = status;
+  if (game.in_checkmate()) {
+    status = `Game Over – ${moveColor} is checkmated`;
+  } else if (game.in_draw()) {
+    status = 'Game Draw';
+  } else {
+    status = `${moveColor} to move`;
+    if (game.in_check()) status += ' (Check)';
   }
 
+  document.getElementById('status').innerText = status;
+}
+
+function resetGame() {
+  game.reset();
+  board.start();
   updateStatus();
-
-  window.restartChess = function () {
-    game.reset();
-    board.start();
-    updateStatus();
-  <button onclick="restartChess()">Restart Game</button>
-  };
-
-});
+}
 </script>
