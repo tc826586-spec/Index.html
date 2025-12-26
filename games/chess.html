@@ -2,267 +2,113 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Chess vs AI</title>
+<title>Real Chess 2D - Gaming Adda</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Chessboard CSS -->
+<link rel="stylesheet" href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
+
 <style>
-  body{
-    margin:0;
-    background:#050814;
-    color:#fff;
-    font-family:Arial, sans-serif;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-  }
-  h1{margin:20px 0}
-
-  .mode button{
-    margin:5px;
-    padding:8px 14px;
-    background:#00e5ff;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-weight:bold;
-  }
-
-  .board{
-    display:grid;
-    grid-template-columns:repeat(8,60px);
-    grid-template-rows:repeat(8,60px);
-    border:3px solid #00e5ff;
-    margin-top:20px;
-  }
-
-  .cell{
-    width:60px;
-    height:60px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:36px;
-    cursor:pointer;
-    user-select:none;
-  }
-
-  .white{background:#eee;color:#000}
-  .black{background:#555}
-  .hint{background:#00e5ff!important}
-
-  .controls{
-    margin:15px;
-  }
-  .controls button{
-    padding:8px 14px;
-    margin:5px;
-    background:#00e5ff;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-  }
+body{
+  background:#0b0f2a;
+  color:white;
+  font-family:Arial, sans-serif;
+  text-align:center;
+}
+#board{
+  width:350px;
+  margin:20px auto;
+}
+#status{
+  margin-top:15px;
+  font-size:18px;
+}
+button{
+  margin-top:10px;
+  padding:8px 15px;
+  border:none;
+  border-radius:6px;
+  background:#00eaff;
+  cursor:pointer;
+}
 </style>
 </head>
-
 <body>
 
-<h1>Chess vs AI</h1>
+<h1>♟ Real Chess 2D</h1>
 
-<div class="mode">
-  <button onclick="setMode('manual')">2 Player</button>
-  <button onclick="setMode('ai')">Vs AI</button>
-</div>
+<div id="board"></div>
+<div id="status"></div>
 
-<div id="status">White's move</div>
+<button onclick="resetGame()">Restart Game</button>
 
-<div class="board" id="board"></div>
+<!-- Chess Logic -->
+<script src="https://unpkg.com/chess.js@0.12.0/chess.min.js"></script>
 
-<div class="controls">
-  <button onclick="resetGame()">Restart</button>
-  <button onclick="location.href='../index.html'">Back</button>
-</div>
+<!-- Chessboard UI -->
+<script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
 
 <script>
-let mode="manual";
-let turn="white";
-let selected=-1;
-let hints=[];
+var board = null
+var game = new Chess()
 
-const pieces={
-  r:"♜",n:"♞",b:"♝",q:"♛",k:"♚",p:"♟",
-  R:"♖",N:"♘",B:"♗",Q:"♕",K:"♔",P:"♙"
-};
-
-let board=[
-"r","n","b","q","k","b","n","r",
-"p","p","p","p","p","p","p","p",
-"","","","","","","","",
-"","","","","","","","",
-"","","","","","","","",
-"","","","","","","","",
-"P","P","P","P","P","P","P","P",
-"R","N","B","Q","K","B","N","R"
-];
-
-const boardDiv=document.getElementById("board");
-
-function setMode(m){
-  mode=m;
-  resetGame();
+function onDragStart (source, piece) {
+  if (game.game_over()) return false
+  if ((game.turn() === 'w' && piece.search(/^b/) !== -1) ||
+      (game.turn() === 'b' && piece.search(/^w/) !== -1)) {
+    return false
+  }
 }
+
+function onDrop (source, target) {
+  var move = game.move({
+    from: source,
+    to: target,
+    promotion: 'q'
+  })
+
+  if (move === null) return 'snapback'
+  updateStatus()
+}
+
+function onSnapEnd () {
+  board.position(game.fen())
+}
+
+function updateStatus () {
+  var status = ''
+  var moveColor = game.turn() === 'w' ? 'White' : 'Black'
+
+  if (game.in_checkmate()) {
+    status = 'Game over, ' + moveColor + ' is in CHECKMATE.'
+  } else if (game.in_draw()) {
+    status = 'Game over, DRAW.'
+  } else {
+    status = moveColor + ' to move'
+    if (game.in_check()) {
+      status += ' (CHECK)'
+    }
+  }
+
+  document.getElementById('status').innerHTML = status
+}
+
+var config = {
+  draggable: true,
+  position: 'start',
+  onDragStart: onDragStart,
+  onDrop: onDrop,
+  onSnapEnd: onSnapEnd
+}
+
+board = Chessboard('board', config)
+updateStatus()
 
 function resetGame(){
-  board=[
-  "r","n","b","q","k","b","n","r",
-  "p","p","p","p","p","p","p","p",
-  "","","","","","","","",
-  "","","","","","","","",
-  "","","","","","","","",
-  "","","","","","","","",
-  "P","P","P","P","P","P","P","P",
-  "R","N","B","Q","K","B","N","R"
-  ];
-  turn="white";
-  selected=-1;
-  hints=[];
-  render();
-  updateStatus();
+  game.reset()
+  board.start()
+  updateStatus()
 }
-
-function updateStatus(){
-  document.getElementById("status").innerText=
-    mode==="ai"
-    ? (turn==="white"?"Your move":"AI thinking...")
-    : (turn==="white"?"White's move":"Black's move");
-}
-
-function render(){
-  boardDiv.innerHTML="";
-  for(let i=0;i<64;i++){
-    const c=document.createElement("div");
-    c.className="cell "+(((Math.floor(i/8)+i)%2)?"black":"white");
-    if(hints.includes(i)) c.classList.add("hint");
-    c.innerHTML=pieces[board[i]]||"";
-    c.onclick=()=>clickSquare(i);
-    boardDiv.appendChild(c);
-  }
-}
-
-function clickSquare(i){
-  let piece=board[i];
-
-  if(selected===-1){
-    if(turn==="white" && "PNBRQK".includes(piece)){
-      selected=i; hints=getMoves(i);
-    }
-    if(turn==="black" && "pnbrqk".includes(piece)){
-      selected=i; hints=getMoves(i);
-    }
-    render(); return;
-  }
-
-  if(hints.includes(i)){
-    board[i]=board[selected];
-    board[selected]="";
-    selected=-1; hints=[];
-    turn=turn==="white"?"black":"white";
-    render(); updateStatus();
-
-    if(mode==="ai" && turn==="black"){
-      setTimeout(aiMove,400);
-    }
-  }else{
-    selected=-1; hints=[]; render();
-  }
-}
-
-function aiMove(){
-  let moves=[];
-  for(let i=0;i<64;i++){
-    if("pnbrqk".includes(board[i])){
-      getMoves(i).forEach(m=>moves.push({f:i,t:m}));
-    }
-  }
-  if(!moves.length) return;
-  let m=moves[Math.floor(Math.random()*moves.length)];
-  board[m.t]=board[m.f];
-  board[m.f]="";
-  turn="white";
-  render(); updateStatus();
-}
-
-function getMoves(i){
-  let p = board[i];
-  if(!p) return [];
-
-  let r = Math.floor(i/8), c = i%8;
-  let res = [];
-
-  // PAWN
-  if(p === "P"){
-    let n = i - 8;
-    if(n >= 0 && board[n] === "") res.push(n);
-  }
-  if(p === "p"){
-    let n = i + 8;
-    if(n < 64 && board[n] === "") res.push(n);
-  }
-
-  // KNIGHT
-  if("Nn".includes(p)){
-    [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
-    .forEach(d=>{
-      let nr=r+d[0], nc=c+d[1];
-      if(nr>=0&&nr<8&&nc>=0&&nc<8){
-        let t=nr*8+nc;
-        if(board[t]==="" || isEnemy(p,board[t])) res.push(t);
-      }
-    });
-  }
-
-  // BISHOP / ROOK / QUEEN
-  const dirs = {
-    B:[[1,1],[1,-1],[-1,1],[-1,-1]],
-    R:[[1,0],[-1,0],[0,1],[0,-1]],
-    Q:[[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]]
-  };
-
-  let key = p.toUpperCase();
-  if(dirs[key]){
-    dirs[key].forEach(d=>{
-      let nr=r+d[0], nc=c+d[1];
-      while(nr>=0&&nr<8&&nc>=0&&nc<8){
-        let t=nr*8+nc;
-        if(board[t]==="") res.push(t);
-        else{
-          if(isEnemy(p,board[t])) res.push(t);
-          break;
-        }
-        nr+=d[0]; nc+=d[1];
-      }
-    });
-  }
-
-  // KING
-  if("Kk".includes(p)){
-    for(let dr=-1;dr<=1;dr++)
-      for(let dc=-1;dc<=1;dc++){
-        if(dr||dc){
-          let nr=r+dr,nc=c+dc;
-          if(nr>=0&&nr<8&&nc>=0&&nc<8){
-            let t=nr*8+nc;
-            if(board[t]===""||isEnemy(p,board[t])) res.push(t);
-          }
-        }
-      }
-  }
-
-  return res;
-}
-
-function isEnemy(a,b){
-  return (a===a.toUpperCase()) !== (b===b.toUpperCase());
-}
-
-resetGame();
 </script>
 
 </body>
