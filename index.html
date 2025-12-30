@@ -85,6 +85,82 @@
 }
 </style>
 </head>
+  
+<canvas id="bgParticles"></canvas>
+
+<script>
+const canvas = document.getElementById("bgParticles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let particles = [];
+for (let i = 0; i < 80; i++) {
+  particles.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 2 + 1,
+    dx: Math.random() * 0.5,
+    dy: Math.random() * 0.5
+  });
+}
+
+function animate() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = "#00ffff";
+    ctx.fill();
+    p.x += p.dx;
+    p.y += p.dy;
+    if (p.x > canvas.width || p.y > canvas.height) {
+      p.x = 0; p.y = Math.random() * canvas.height;
+    }
+  });
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+
+<style>
+#bgParticles{
+  position: fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
+</style>
+
+  <audio id="hoverSound" src="https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"></audio>
+
+<script>
+document.querySelectorAll("button, .play-btn").forEach(el=>{
+  el.addEventListener("mouseenter",()=>{
+    document.getElementById("hoverSound").play();
+  });
+});
+</script>
+
+  <div id="pageLoader"></div>
+
+<style>
+#pageLoader{
+  position:fixed;
+  inset:0;
+  background:#000;
+  z-index:9999;
+  display:none;
+}
+</style>
+
+<script>
+document.querySelectorAll("a").forEach(link=>{
+  link.onclick = ()=>{
+    document.getElementById("pageLoader").style.display="block";
+  }
+});
+</script>
 
 <body>
 
@@ -101,6 +177,47 @@
 setTimeout(() => {
   document.getElementById("entryScreen").style.display = "none";
 }, 5800);
+</script>
+  
+<div class="live-count">🔥 Players Online: <span id="players"></span></div>
+
+<script>
+let count = 124;
+setInterval(()=>{
+  count += Math.floor(Math.random()*3);
+  document.getElementById("players").innerText = count;
+},2000);
+</script>
+
+<style>
+.live-count{
+  color:#00ffff;
+  font-weight:bold;
+  text-align:center;
+  margin-top:15px;
+}
+</style>
+
+  <div id="achievement">🏆 Welcome Gamer!</div>
+
+<style>
+#achievement{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  background:#00ffff;
+  color:#000;
+  padding:10px 20px;
+  border-radius:20px;
+  display:none;
+}
+</style>
+
+<script>
+setTimeout(()=>{
+  document.getElementById("achievement").style.display="block";
+  setTimeout(()=>{document.getElementById("achievement").style.display="none"},3000);
+},5000);
 </script>
 
 <!-- ===== YOUR EXISTING WEBSITE STARTS BELOW ===== -->
