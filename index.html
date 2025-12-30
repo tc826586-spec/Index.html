@@ -1,6 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Gaming Adda</title>
+
+<style>
+/* ===== ENTRY SCREEN ===== */
+#entryScreen {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, #050b2e, #000);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 99999;
+  overflow: hidden;
+  animation: slideUp 1.2s ease forwards;
+  animation-delay: 4.5s;
+}
+
+.entry-box {
+  text-align: center;
+  color: white;
+  animation: fadeIn 1.2s ease forwards;
+}
+
+.logo {
+  font-size: 70px;
+  animation: glow 1.5s infinite alternate;
+}
+
+.title {
+  font-size: 48px;
+  margin-top: 15px;
+  letter-spacing: 2px;
+  animation: typing 2.5s steps(12) forwards;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 3px solid cyan;
+  width: 0;
+}
+
+.loading {
+  width: 260px;
+  height: 6px;
+  background: #222;
+  margin: 30px auto;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.loading span {
+  display: block;
+  height: 100%;
+  width: 0;
+  background: linear-gradient(90deg, cyan, lime);
+  animation: loadBar 3s forwards;
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes glow {
+  from { text-shadow: 0 0 10px cyan; }
+  to { text-shadow: 0 0 25px cyan, 0 0 40px blue; }
+}
+
+@keyframes typing {
+  to { width: 12ch; }
+}
+
+@keyframes loadBar {
+  to { width: 100%; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  to { transform: translateY(-100%); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ENTRY ANIMATION -->
+<div id="entryScreen">
+  <div class="entry-box">
+    <div class="logo">🎮</div>
+    <div class="title">Gaming Adda</div>
+    <div class="loading"><span></span></div>
+  </div>
+</div>
+
+<script>
+setTimeout(() => {
+  document.getElementById("entryScreen").style.display = "none";
+}, 5800);
+</script>
+
+<!-- ===== YOUR EXISTING WEBSITE STARTS BELOW ===== -->
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Gaming Adda – Play Games</title>
