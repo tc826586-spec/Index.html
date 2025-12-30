@@ -2,45 +2,69 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>2D Chess – Real Moves</title>
+<title>2D Chess – Legal Hints</title>
 
 <style>
-#board {
-  display:grid;
-  grid-template-columns:repeat(8,60px);
-  border:3px solid cyan;
+body{
+ background:#000;
+ color:white;
+ display:flex;
+ justify-content:center;
+ align-items:center;
+ height:100vh;
 }
-.square {
-  width:60px;
-  height:60px;
-  font-size:36px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  cursor:pointer;
+#board{
+ display:grid;
+ grid-template-columns:repeat(8,60px);
+ border:3px solid cyan;
 }
-.light {background:#f0d9b5}
-.dark {background:#b58863}
-.valid {background:#66ffff !important}
+.square{
+ width:60px;
+ height:60px;
+ font-size:36px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ cursor:pointer;
+}
+.light{background:#f0d9b5}
+.dark{background:#b58863}
+.selected{
+ outline:3px solid cyan;
+}
+.hint{
+ box-shadow: inset 0 0 0 4px rgba(0,255,0,0.7);
+}
+.controls{
+ text-align:center;
+ margin-top:10px;
+}
+button{
+ background:cyan;
+ border:none;
+ padding:6px 14px;
+ border-radius:6px;
+ cursor:pointer;
+}
 </style>
 </head>
 
 <body>
 
-<div style="display:flex;justify-content:center;margin-top:20px">
-  <div id="board"></div>
-</div>
-
-<div style="text-align:center;margin-top:10px">
+<div>
+ <div id="board"></div>
+ <div class="controls">
   <button onclick="restart()">Restart</button>
+ </div>
 </div>
 
 <script>
 const boardEl=document.getElementById("board");
-let selected=null;
 let turn="white";
+let selected=null;
+let legalHints=[];
 
-const P={
+const ICON={
  r:"♜",n:"♞",b:"♝",q:"♛",k:"♚",p:"♟",
  R:"♖",N:"♘",B:"♗",Q:"♕",K:"♔",P:"♙"
 };
@@ -49,47 +73,61 @@ let board=[];
 
 function restart(){
  board=[
-  "rnbqkbnr",
-  "pppppppp",
-  "........",
-  "........",
-  "........",
-  "........",
-  "PPPPPPPP",
-  "RNBQKBNR"
+ "rnbqkbnr",
+ "pppppppp",
+ "........",
+ "........",
+ "........",
+ "........",
+ "PPPPPPPP",
+ "RNBQKBNR"
  ];
  turn="white";
+ selected=null;
+ legalHints=[];
  draw();
 }
 
-function draw(valid=[]){
+function draw(){
  boardEl.innerHTML="";
  for(let r=0;r<8;r++){
   for(let c=0;c<8;c++){
-   const d=document.createElement("div");
-   d.className="square "+((r+c)%2?"dark":"light");
-   if(valid.some(v=>v.r===r&&v.c===c)) d.classList.add("valid");
-   const p=board[r][c];
-   if(p!=".") d.textContent=P[p];
-   d.onclick=()=>click(r,c);
-   boardEl.appendChild(d);
+   const sq=document.createElement("div");
+   sq.className="square "+((r+c)%2?"dark":"light");
+
+   if(selected && selected.r===r && selected.c===c)
+    sq.classList.add("selected");
+
+   if(legalHints.some(m=>m.r===r && m.c===c))
+    sq.classList.add("hint");
+
+   let p=board[r][c];
+   if(p!=".") sq.textContent=ICON[p];
+
+   sq.onclick=()=>onClick(r,c);
+   boardEl.appendChild(sq);
   }
  }
 }
 
-function click(r,c){
+function onClick(r,c){
  const p=board[r][c];
+
  if(selected){
-  const moves=getMoves(selected.r,selected.c);
-  if(moves.some(m=>m.r===r&&m.c===c)){
+  if(legalHints.some(m=>m.r===r && m.c===c)){
    move(selected.r,selected.c,r,c);
    turn=turn==="white"?"black":"white";
   }
   selected=null;
+  legalHints=[];
   draw();
- }else if(p!="."&&isTurn(p)){
+  return;
+ }
+
+ if(p!="." && isTurn(p)){
   selected={r,c};
-  draw(getMoves(r,c));
+  legalHints=getLegalMoves(r,c);
+  draw();
  }
 }
 
@@ -102,32 +140,62 @@ function set(s,i,v){return s.slice(0,i)+v+s.slice(i+1)}
 function isTurn(p){return turn==="white"?p===p.toUpperCase():p===p.toLowerCase()}
 function enemy(p){return turn==="white"?p===p.toLowerCase():p===p.toUpperCase()}
 
-/* ===== REAL CHESS MOVES ===== */
-function getMoves(r,c){
- const p=board[r][c];
- let m=[];
+/* ===== LEGAL MOVE SYSTEM ===== */
+function getLegalMoves(r,c){
+ const raw=getMoves(r,c);
+ return raw.filter(m=>!kingInCheckAfter(r,c,m.r,m.c));
+}
+
+function kingInCheckAfter(r1,c1,r2,c2){
+ const copy=board.map(x=>x);
+ const piece=copy[r1][c1];
+ copy[r2]=set(copy[r2],c2,piece);
+ copy[r1]=set(copy[r1],c1,".");
+ return kingInCheck(copy);
+}
+
+function kingInCheck(b){
+ let kr,kc;
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(b[r][c]===(turn==="white"?"K":"k")){kr=r;kc=c;}
+
+ for(let r=0;r<8;r++)
+  for(let c=0;c<8;c++)
+   if(b[r][c]!="." && enemy(b[r][c])){
+    if(getMoves(r,c,b,true).some(m=>m.r===kr&&m.c===kc))
+     return true;
+   }
+ return false;
+}
+
+/* ===== PIECE MOVES ===== */
+function getMoves(r,c,b=board,attack=false){
+ const p=b[r][c];
+ const m=[];
  const dir=p==="P"?-1:p==="p"?1:0;
 
  if(p.toLowerCase()=="p"){
-  if(board[r+dir]?.[c]==".") m.push({r:r+dir,c});
-  if((r==6||r==1)&&board[r+dir]?.[c]=="."&&board[r+2*dir]?.[c]==".")
-    m.push({r:r+2*dir,c});
+  if(!attack && b[r+dir]?.[c]==".")
+   m.push({r:r+dir,c});
+  if(!attack && (r==6||r==1) && b[r+dir]?.[c]=="." && b[r+2*dir]?.[c]==".")
+   m.push({r:r+2*dir,c});
   [-1,1].forEach(dc=>{
-   if(board[r+dir]?.[c+dc]!="."&&enemy(board[r+dir]?.[c+dc]))
+   if(b[r+dir]?.[c+dc] && enemy(b[r+dir][c+dc]))
     m.push({r:r+dir,c:c+dc});
   });
  }
 
  if("rbq".includes(p.toLowerCase())){
-  const dirs=[];
-  if("rq".includes(p.toLowerCase())) dirs.push([1,0],[-1,0],[0,1],[0,-1]);
-  if("bq".includes(p.toLowerCase())) dirs.push([1,1],[1,-1],[-1,1],[-1,-1]);
-  dirs.forEach(d=>{
-   let nr=r+d[0],nc=c+d[1];
-   while(board[nr]?.[nc]!=null){
-    if(board[nr][nc]==".") m.push({r:nr,c:nc});
-    else{ if(enemy(board[nr][nc])) m.push({r:nr,c:nc}); break;}
-    nr+=d[0]; nc+=d[1];
+  const d=[];
+  if("rq".includes(p.toLowerCase())) d.push([1,0],[-1,0],[0,1],[0,-1]);
+  if("bq".includes(p.toLowerCase())) d.push([1,1],[1,-1],[-1,1],[-1,-1]);
+  d.forEach(x=>{
+   let nr=r+x[0],nc=c+x[1];
+   while(b[nr]?.[nc]!=null){
+    if(b[nr][nc]==".") m.push({r:nr,c:nc});
+    else{ if(enemy(b[nr][nc])) m.push({r:nr,c:nc}); break;}
+    nr+=x[0]; nc+=x[1];
    }
   });
  }
@@ -135,21 +203,20 @@ function getMoves(r,c){
  if(p.toLowerCase()=="n"){
   [[2,1],[2,-1],[-2,1],[-2,-1],[1,2],[1,-2],[-1,2],[-1,-2]]
   .forEach(d=>{
-   const nr=r+d[0],nc=c+d[1];
-   if(board[nr]?.[nc]!=null&&(board[nr][nc]=="."||enemy(board[nr][nc])))
+   let nr=r+d[0],nc=c+d[1];
+   if(b[nr]?.[nc]!=null && (b[nr][nc]=="."||enemy(b[nr][nc])))
     m.push({r:nr,c:nc});
   });
  }
 
  if(p.toLowerCase()=="k"){
   for(let dr=-1;dr<=1;dr++)
-   for(let dc=-1;dc<=1;dc++){
+   for(let dc=-1;dc<=1;dc++)
     if(dr||dc){
-     const nr=r+dr,nc=c+dc;
-     if(board[nr]?.[nc]!=null&&(board[nr][nc]=="."||enemy(board[nr][nc])))
+     let nr=r+dr,nc=c+dc;
+     if(b[nr]?.[nc]!=null && (b[nr][nc]=="."||enemy(b[nr][nc])))
       m.push({r:nr,c:nc});
     }
-   }
  }
 
  return m;
