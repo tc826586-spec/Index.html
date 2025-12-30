@@ -1,81 +1,169 @@
-<!-- CHESS CONTAINER -->
-<div style="display:flex;flex-direction:column;align-items:center;">
-  <div id="board" style="width:320px;"></div>
-  <div id="status" style="margin-top:10px;font-weight:bold;"></div>
-  <button onclick="resetGame()" style="margin-top:10px;">Restart Game</button>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>2D Chess</title>
+
+<style>
+#chess-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+#board {
+  display: grid;
+  grid-template-columns: repeat(8, 60px);
+  grid-template-rows: repeat(8, 60px);
+  border: 3px solid #00ffff;
+}
+
+.square {
+  width: 60px;
+  height: 60px;
+  font-size: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.white { background: #f0d9b5; }
+.black { background: #b58863; }
+
+.selected {
+  outline: 3px solid cyan;
+}
+
+#controls {
+  text-align: center;
+  margin-top: 10px;
+}
+button {
+  padding: 6px 14px;
+  background: cyan;
+  border: none;
+  border-radius: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="chess-container">
+  <div id="board"></div>
 </div>
 
-<!-- LOAD CSS -->
-<link rel="stylesheet"
-href="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css">
-
-<!-- LOAD LIBRARIES (ORDER IS IMPORTANT) -->
-<script src="https://unpkg.com/chess.js@0.12.0/chess.min.js"></script>
-<script src="https://unpkg.com/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.js"></script>
+<div id="controls">
+  <button onclick="restart()">Restart</button>
+  <button onclick="toggleAI()">AI: OFF</button>
+</div>
 
 <script>
-let board;
-let game;
+const boardElement = document.getElementById("board");
+let selected = null;
+let turn = "white";
+let aiEnabled = false;
 
-document.addEventListener("DOMContentLoaded", function () {
+const pieces = {
+  r:"♜", n:"♞", b:"♝", q:"♛", k:"♚", p:"♟",
+  R:"♖", N:"♘", B:"♗", Q:"♕", K:"♔", P:"♙"
+};
 
-  // ✅ FIX: correct initialization
-  game = new Chess();
+let board = [];
 
-  board = Chessboard('board', {
-    draggable: true,
-    position: 'start',
+function setupBoard() {
+  board = [
+    "rnbqkbnr",
+    "pppppppp",
+    "........",
+    "........",
+    "........",
+    "........",
+    "PPPPPPPP",
+    "RNBQKBNR"
+  ];
+}
 
-    onDragStart: function (source, piece) {
-      if (game.game_over()) return false;
-
-      // allow moves only for correct color
-      if (
-        (game.turn() === 'w' && piece.startsWith('b')) ||
-        (game.turn() === 'b' && piece.startsWith('w'))
-      ) {
-        return false;
-      }
-    },
-
-    onDrop: function (source, target) {
-      const move = game.move({
-        from: source,
-        to: target,
-        promotion: 'q'
-      });
-
-      if (move === null) return 'snapback';
-      updateStatus();
-    },
-
-    onSnapEnd: function () {
-      board.position(game.fen());
+function draw() {
+  boardElement.innerHTML = "";
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      const sq = document.createElement("div");
+      sq.className = "square " + ((r + c) % 2 ? "black" : "white");
+      const piece = board[r][c];
+      if (piece !== ".") sq.textContent = pieces[piece];
+      sq.onclick = () => clickSquare(r, c);
+      boardElement.appendChild(sq);
     }
-  });
-
-  updateStatus();
-});
-
-function updateStatus() {
-  let status = '';
-  let moveColor = game.turn() === 'w' ? 'White' : 'Black';
-
-  if (game.in_checkmate()) {
-    status = `Game Over – ${moveColor} is checkmated`;
-  } else if (game.in_draw()) {
-    status = 'Game Draw';
-  } else {
-    status = `${moveColor} to move`;
-    if (game.in_check()) status += ' (Check)';
   }
-
-  document.getElementById('status').innerText = status;
 }
 
-function resetGame() {
-  game.reset();
-  board.start();
-  updateStatus();
+function clickSquare(r, c) {
+  const piece = board[r][c];
+
+  if (selected) {
+    move(selected.r, selected.c, r, c);
+    selected = null;
+    draw();
+    if (aiEnabled && turn === "black") setTimeout(aiMove, 400);
+  } else {
+    if (piece !== "." && isTurnPiece(piece)) {
+      selected = { r, c };
+    }
+  }
 }
+
+function move(r1, c1, r2, c2) {
+  board[r2] = replace(board[r2], c2, board[r1][c1]);
+  board[r1] = replace(board[r1], c1, ".");
+  turn = turn === "white" ? "black" : "white";
+}
+
+function replace(str, idx, chr) {
+  return str.substring(0, idx) + chr + str.substring(idx + 1);
+}
+
+function isTurnPiece(p) {
+  return turn === "white" ? p === p.toUpperCase() : p === p.toLowerCase();
+}
+
+/* ---------- SIMPLE AI ---------- */
+function aiMove() {
+  let moves = [];
+  for (let r = 0; r < 8; r++) {
+    for (let c = 0; c < 8; c++) {
+      if (board[r][c] !== "." && board[r][c] === board[r][c].toLowerCase()) {
+        if (r + 1 < 8) moves.push({ r1:r, c1:c, r2:r+1, c2:c });
+      }
+    }
+  }
+  if (moves.length) {
+    const m = moves[Math.floor(Math.random() * moves.length)];
+    move(m.r1, m.c1, m.r2, m.c2);
+    draw();
+  }
+}
+
+/* ---------- CONTROLS ---------- */
+function restart() {
+  setupBoard();
+  turn = "white";
+  draw();
+}
+
+function toggleAI() {
+  aiEnabled = !aiEnabled;
+  event.target.textContent = "AI: " + (aiEnabled ? "ON" : "OFF");
+}
+
+/* INIT */
+setupBoard();
+draw();
 </script>
+
+</body>
+</html>
+
